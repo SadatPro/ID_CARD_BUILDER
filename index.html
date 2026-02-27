@@ -8,12 +8,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Alumni+Sans+Inline+One&family=Archivo+Black&family=Audiowide&family=Bungee+Inline&family=Jersey+20+Charted&family=Jersey+25+Charted&family=Libre+Barcode+39+Text&family=Lilita+One&family=Monoton&family=Paytone+One&family=Rowdies&family=Rubik+Broken+Fax&family=Rubik+Glitch+Pop&family=Rubik+Lines&family=Unbounded:wght@400;700;900&family=Wallpoet&family=Zen+Tokyo+Zoo&family=Orbitron:wght@700;900&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-blue: #0a1172;
-            --accent-green: #00b300;
-            --dark-bg: #0d1117;
-            --panel-bg: #161b22;
-            --white: #ffffff;
-            /* Background images provided by user */
+            /* HIG Color Palette (Dark Mode Default) */
+            --bg-base: #000000;
+            --bg-secondary: #1C1C1E; 
+            --bg-tertiary: #2C2C2E; 
+            --bg-quaternary: #3A3A3C;
+            --label-primary: #FFFFFF;
+            --label-secondary: #EBEBF599; 
+            --separator: #38383A;
+            --tint-blue: #0A84FF;
+            --tint-blue-hover: #007AFF;
+            
+            /* ID Variables */
             --id-bg: url('https://raw.githubusercontent.com/SadatPro/img/refs/heads/main/NEW_ESRC_ID_CARD2.jpg');
             --id-bg-back: url('https://raw.githubusercontent.com/SadatPro/img/refs/heads/main/NEW_ESRC_BLANC_BACK_ID_CARD.jpg');
         }
@@ -21,202 +27,264 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            background: var(--dark-bg);
-            color: var(--white);
-            /* Updated General Website Font as requested */
-            font-family: 'Stack Sans Notch', 'Orbitron', 'Montserrat', sans-serif;
+            background: var(--bg-base);
+            color: var(--label-primary);
+            font-family: 'Stack Sans Notch', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px;
+            padding: 0 0 40px 0;
         }
 
-        .header {
-            margin-bottom: 20px;
-            text-align: center;
+        /* Glassmorphic Header */
+        .header-wrapper {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 20px 15px 20px;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 100;
+            border-bottom: 0.5px solid var(--separator);
+            margin-bottom: 30px;
         }
 
-        .header h1 {
-            font-size: 2.5rem;
-            color: var(--white);
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px rgba(0, 179, 0, 0.3);
-            text-transform: uppercase;
+        .header-wrapper h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 4px;
         }
 
-        .header span {
-            color: var(--accent-green);
+        .header-wrapper span {
+            color: var(--tint-blue);
         }
 
-        /* Tabs Styling */
+        .header-wrapper p {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 13px;
+            color: var(--label-secondary);
+            font-weight: 400;
+        }
+
+        /* HIG Segmented Control for Tabs */
         .tabs-container {
             display: flex;
-            gap: 15px;
+            background: var(--bg-secondary);
+            padding: 3px;
+            border-radius: 9px;
             margin-bottom: 30px;
-            justify-content: center;
-            width: 100%;
+            width: fit-content;
         }
 
         .tab-btn {
-            background: var(--panel-bg);
-            color: #8b949e;
-            border: 2px solid #30363d;
-            padding: 12px 35px;
-            border-radius: 30px;
-            font-family: inherit;
-            font-weight: bold;
-            font-size: 1rem;
+            background: transparent;
+            color: var(--label-primary);
+            border: none;
+            padding: 6px 24px;
+            border-radius: 7px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 500;
+            font-size: 13px;
             cursor: pointer;
-            transition: all 0.3s;
-            letter-spacing: 1px;
+            transition: all 0.2s ease;
+            letter-spacing: -0.2px;
         }
 
         .tab-btn.active {
-            background: var(--accent-green);
-            color: #000;
-            border-color: var(--accent-green);
-            box-shadow: 0 0 15px rgba(0, 179, 0, 0.4);
+            background: #636366; 
+            box-shadow: 0 3px 8px rgba(0,0,0,0.12), 0 3px 1px rgba(0,0,0,0.04);
+            font-weight: 600;
         }
 
         .container {
             display: flex;
             gap: 40px;
             width: 100%;
-            max-width: 1200px;
+            max-width: 1000px;
             flex-wrap: wrap;
             justify-content: center;
             align-items: flex-start;
+            padding: 0 20px;
         }
 
-        /* Controls Panel */
+        /* Settings Panel Structure */
         .controls {
-            background: var(--panel-bg);
-            padding: 25px;
-            border-radius: 16px;
-            width: 450px;
-            border: 1px solid #30363d;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-            gap: 15px;
-        }
-
-        /* Control Sections for neat grouping */
-        .control-section {
-            background: #090c10;
-            padding: 15px;
-            border-radius: 10px;
-            border: 1px solid #21262d;
+            width: 400px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 24px;
         }
 
-        .section-title {
-            font-size: 11px;
-            color: var(--accent-green);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: bold;
-            margin-bottom: 5px;
-            border-bottom: 1px solid #21262d;
-            padding-bottom: 5px;
+        .control-section {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden; 
         }
 
-        .input-group { display: flex; flex-direction: column; gap: 6px; }
-        
-        label { 
-            font-size: 11px; 
-            font-weight: 700; 
-            text-transform: uppercase; 
-            color: #8b949e; 
-            letter-spacing: 0.5px;
+        .section-header {
             font-family: 'Montserrat', sans-serif;
+            font-size: 12px;
+            text-transform: uppercase;
+            color: var(--label-secondary);
+            padding: 0 16px 8px 16px;
+            margin-top: -10px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .input-group { 
+            display: flex; 
+            flex-direction: row; 
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            border-bottom: 0.5px solid var(--separator);
+            gap: 15px;
+        }
+        
+        .control-section .input-group:last-child { border-bottom: none; }
+
+        .input-group.column-mode {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        label { 
+            font-family: 'Montserrat', sans-serif;
+            font-size: 13px; 
+            font-weight: 500; 
+            color: var(--label-primary); 
+            white-space: nowrap;
         }
         
         input[type="text"], select {
             width: 100%;
-            padding: 10px 12px;
-            background: #010409;
-            border: 1px solid #30363d;
-            border-radius: 6px;
-            color: white;
+            max-width: 200px;
+            padding: 8px 12px;
+            background: var(--bg-tertiary);
+            border: 1px solid transparent;
+            border-radius: 8px;
+            color: var(--label-primary);
             font-family: 'Montserrat', sans-serif;
-            font-size: 13px;
+            font-size: 14px;
             outline: none;
-            transition: border-color 0.2s;
+            transition: all 0.2s;
+            text-align: right;
         }
 
-        input[type="text"]:focus, select:focus { border-color: var(--accent-green); }
+        .column-mode input[type="text"], .column-mode select {
+            max-width: 100%;
+            text-align: left;
+        }
+
+        input[type="text"]:focus, select:focus { background: var(--bg-quaternary); }
+
+        input[type="file"] { display: none; }
+        .file-upload-btn {
+            background: var(--bg-tertiary);
+            color: var(--tint-blue);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            width: 100%;
+            transition: background 0.2s;
+        }
+        .file-upload-btn:hover { background: var(--bg-quaternary); }
 
         input[type="color"] {
-            width: 100%;
+            -webkit-appearance: none;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 16px;
+            cursor: pointer;
+            background: transparent;
             padding: 0;
-            background: #010409;
-            border: 1px solid #30363d;
-            border-radius: 6px;
-            height: 38px;
-            cursor: pointer;
+            overflow: hidden;
         }
-
-        input[type="file"] {
-            background: #010409;
-            padding: 8px;
-            border-radius: 6px;
-            border: 1px dashed #30363d;
-            width: 100%;
-            font-size: 12px;
-            cursor: pointer;
-        }
+        input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+        input[type="color"]::-webkit-color-swatch { border: 2px solid var(--separator); border-radius: 16px; }
 
         input[type="range"] {
+            -webkit-appearance: none;
             width: 100%;
-            accent-color: var(--accent-green);
+            background: transparent;
+            height: 20px;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 24px;
+            width: 24px;
+            border-radius: 50%;
+            background: #ffffff;
+            cursor: pointer;
+            margin-top: -10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+        input[type="range"]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            background: var(--bg-quaternary);
+            border-radius: 2px;
         }
 
         .sliders-row {
             display: flex;
             gap: 15px;
+            width: 100%;
         }
 
         .btn {
             width: 100%;
-            padding: 16px;
+            padding: 14px;
             border: none;
-            border-radius: 8px;
-            font-weight: 900;
-            font-family: inherit;
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 15px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
         }
 
         .btn-primary { 
-            background: var(--accent-green); 
-            color: #000; 
+            background: var(--tint-blue); 
+            color: #ffffff; 
             margin-top: 10px;
-            box-shadow: 0 0 15px rgba(0, 179, 0, 0.4);
         }
         .btn-primary:hover { 
-            background: #00d900; 
-            transform: translateY(-2px); 
-            box-shadow: 0 0 25px rgba(0, 179, 0, 0.6);
+            background: var(--tint-blue-hover); 
+            transform: scale(0.98);
         }
 
         .tip {
-            font-size: 11px;
-            color: #8b949e;
-            margin-top: -2px;
             font-family: 'Montserrat', sans-serif;
+            font-size: 11px;
+            color: var(--label-secondary);
+            margin-top: 4px;
+            line-height: 1.4;
         }
 
-        /* Tab Content Display Logic */
         .tab-content { display: none; }
         .controls.tab-content.active { display: flex; flex-direction: column; }
         .preview-container.tab-content.active { display: flex; flex-direction: column; }
 
-        /* Live Preview Display */
         .preview-container {
             flex: 1;
             min-width: 380px;
@@ -230,39 +298,36 @@
             background-color: #fff;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
-            border-radius: 8px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1);
+            border-radius: 12px;
+            transform: translateZ(0); 
         }
 
-        /* --- FRONT SIDE STYLES --- */
-        .id-bg {
+        /* --- MATHEMATICALLY SYNCED FRONT SIDE STYLES --- */
+        .id-bg, .id-bg-back {
             position: absolute;
             inset: 0;
-            background: var(--id-bg);
             background-size: cover;
             background-position: center;
             z-index: 1;
         }
+        .id-bg { background-image: var(--id-bg); }
+        .id-bg-back { background-image: var(--id-bg-back); }
 
         .id-photo-area {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            height: 65.0%; /* User requested 65.0% */
+            height: 65.0%; 
             z-index: 2;
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
             overflow: hidden;
         }
 
+        /* Positioning handled exclusively by JS to match Canvas exactly */
         .id-photo {
-            max-width: 150%;
-            max-height: 150%;
-            object-fit: contain;
-            transform-origin: bottom center;
-            transition: transform 0.1s ease-out;
+            position: absolute;
+            transform-origin: top left;
         }
 
         .id-overlay {
@@ -272,391 +337,301 @@
             pointer-events: none;
         }
 
+        /* Converted to absolute positioning with rotate to perfectly mirror canvas math */
         .id-role {
             position: absolute;
-            right: 24px;
-            top: 25%;
-            writing-mode: vertical-rl;
-            text-orientation: mixed;
-            font-family: 'Archivo Black', sans-serif;
-            font-size: 2.2rem; 
-            color: var(--accent-green);
-            text-transform: uppercase;
+            transform-origin: top left;
+            white-space: nowrap;
             letter-spacing: 2px;
             line-height: 1;
-            transition: transform 0.1s ease-out, color 0.1s;
         }
 
         .id-name {
             position: absolute;
-            bottom: 3.2%; 
-            left: 26%; 
-            right: 4%;
-            text-align: center;
-            font-family: 'Archivo Black', sans-serif;
-            font-size: 1.3rem; 
-            color: var(--primary-blue);
-            text-transform: uppercase;
+            white-space: nowrap;
             letter-spacing: 1px;
-            transition: transform 0.1s ease-out, color 0.1s;
+            line-height: 1;
         }
 
-        /* --- BACK SIDE STYLES --- */
-        .id-bg-back {
-            position: absolute;
-            inset: 0;
-            background: var(--id-bg-back);
-            background-size: cover;
-            background-position: center;
-            z-index: 1;
-        }
-
-        .id-qr-area {
-            position: absolute;
-            top: 25%;
-            left: 0;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            z-index: 5;
-        }
-
+        /* --- MATHEMATICALLY SYNCED BACK SIDE STYLES --- */
         .id-qr {
-            width: 40%;
-            aspect-ratio: 1/1;
-            background: white;
-            padding: 10px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            object-fit: contain;
-            transition: transform 0.15s ease-out;
+            position: absolute;
+            box-sizing: content-box;
+            z-index: 5;
         }
 
         .id-back-text {
             position: absolute;
-            left: 0;
-            width: 100%;
-            text-align: center;
-            font-family: 'Montserrat', sans-serif;
-            color: #000000;
+            white-space: nowrap;
             z-index: 5;
-            transition: color 0.1s;
+            line-height: 1;
         }
-
-        .b-id-num { top: 53.5%; font-size: 1.05rem; font-weight: 700; }
-        .b-blood-lbl { top: 58.5%; font-size: 0.95rem; font-weight: 400; }
-        .b-blood-val { top: 61.5%; font-size: 1.5rem; font-weight: 700; }
-        .b-phone { bottom: 12%; font-size: 1.05rem; font-weight: 700; }
-        .b-email { bottom: 6%; font-size: 0.95rem; font-weight: 700; text-transform: uppercase; }
 
         #render-canvas { display: none; }
 
+        .preview-label {
+            font-family: 'Montserrat', sans-serif;
+            margin-top: 16px;
+            font-size: 13px;
+            color: var(--label-secondary);
+            font-weight: 500;
+        }
+
         @media (max-width: 768px) {
             .controls { width: 100%; }
-            .tabs-container { flex-direction: column; padding: 0 20px; }
-            .tab-btn { text-align: center; }
         }
     </style>
 </head>
 <body>
 
-    <div class="header">
+    <div class="header-wrapper">
         <h1>TryMy<span>ID</span></h1>
-        <p style="color: #8b949e; margin-top: 5px; font-weight: 600; font-family: 'Montserrat', sans-serif;">Advanced ID Card Editor</p>
+        <p>Advanced ID Card Studio</p>
     </div>
 
     <div class="tabs-container">
-        <button id="btn-front" class="tab-btn active" onclick="switchTab('front')">FRONT SIDE</button>
-        <button id="btn-back" class="tab-btn" onclick="switchTab('back')">BACK SIDE</button>
+        <button id="btn-front" class="tab-btn active" onclick="switchTab('front')">Front Side</button>
+        <button id="btn-back" class="tab-btn" onclick="switchTab('back')">Back Side</button>
     </div>
 
     <div class="container">
         <!-- Settings Panel: FRONT -->
         <div class="controls tab-content active" id="controls-front">
 
-            <!-- SECTION 1: ROLE CONTROLS (Moved to Top) -->
-            <div class="control-section">
-                <div class="section-title">Role Settings</div>
-                <div class="input-group">
-                    <label>Position / Role</label>
-                    <!-- Editable field with datalist options -->
-                    <input type="text" id="posInp" list="roleOptions" value="PRESIDENT" placeholder="Select or type custom role" oninput="syncFront()">
-                    <datalist id="roleOptions">
-                        <!-- Phase 1: Core Executive -->
-                        <option value="PRESIDENT">
-                        <option value="VICE PRESIDENT - 1">
-                        <option value="VICE PRESIDENT - 2">
-                        <option value="GENERAL SECRETARY (GS)">
-                        <option value="ASSISTANT GENERAL SECRETARY - 1">
-                        <option value="ASSISTANT GENERAL SECRETARY - 2">
-                        <!-- Phase 2: Executive Committee -->
-                        <option value="TREASURER">
-                        <option value="ASSISTANT TREASURER">
-                        <option value="WOMEN'S SECRETARY">
-                        <option value="JOINT WOMEN'S SECRETARY">
-                        <option value="MEDIA SECRETARY">
-                        <option value="ASSISTANT MEDIA SECRETARY">
-                        <option value="OFFICE SECRETARY">
-                        <option value="ASSISTANT OFFICE SECRETARY">
-                        <option value="ORGANIZING SECRETARY">
-                        <option value="ASSISTANT ORGANIZING SECRETARY">
-                        <option value="PRESS SECRETARY">
-                        <option value="ASSISTANT PRESS SECRETARY">
-                        <option value="EXECUTIVE MEMBER">
-                    </datalist>
-                </div>
-                <div class="input-group">
-                    <label>Role Font</label>
-                    <select id="roleFontInp" onchange="syncFront()">
-                        <option value="Archivo Black">Archivo Black</option>
-                        <option value="Stack Sans Notch">Stack Sans Notch</option>
-                        <option value="Unbounded">Unbounded</option>
-                        <option value="Monoton">Monoton</option>
-                        <option value="Audiowide">Audiowide</option>
-                        <option value="Paytone One">Paytone One</option>
-                        <option value="Rowdies">Rowdies</option>
-                        <option value="Lilita One">Lilita One</option>
-                        <option value="Arial Black">Black 900 (Arial Black)</option>
-                        <option value="Libre Barcode 39 Text">Libre Barcode 39 Text</option>
-                        <option value="Wallpoet">Wallpoet</option>
-                        <option value="Bungee Inline">Bungee Inline</option>
-                        <option value="Boldonse">Boldonse</option>
-                        <option value="BBH Bartle">BBH Bartle</option>
-                        <option value="Jersey 20 Charted">Jersey 20 Charted</option>
-                        <option value="Jersey 25 Charted">Jersey 25 Charted</option>
-                        <option value="Rubik Broken Fax">Rubik Broken Fax</option>
-                        <option value="Rubik Glitch Pop">Rubik Glitch Pop</option>
-                        <option value="Rubik Lines">Rubik Lines</option>
-                        <option value="Alumni Sans Inline One">Alumni Sans Inline One</option>
-                        <option value="Zen Tokyo Zoo">Zen Tokyo Zoo</option>
-                    </select>
-                </div>
-                <div class="sliders-row">
-                    <div class="input-group" style="flex: 1;">
-                        <label>Role Zoom</label>
-                        <input type="range" id="roleSizeInp" min="0.5" max="2.5" step="0.05" value="1.0" oninput="syncFront()">
+            <!-- SECTION 1: ROLE CONTROLS -->
+            <div>
+                <div class="section-header">Role Configuration</div>
+                <div class="control-section">
+                    <div class="input-group">
+                        <label>Position</label>
+                        <input type="text" id="posInp" list="roleOptions" value="PRESIDENT" placeholder="Select or type..." oninput="syncFront()">
+                        <datalist id="roleOptions">
+                            <option value="PRESIDENT">
+                            <option value="VICE PRESIDENT - 1">
+                            <option value="VICE PRESIDENT - 2">
+                            <option value="GENERAL SECRETARY (GS)">
+                            <option value="ASSISTANT GENERAL SECRETARY - 1">
+                            <option value="ASSISTANT GENERAL SECRETARY - 2">
+                            <option value="TREASURER">
+                            <option value="ASSISTANT TREASURER">
+                            <option value="WOMEN'S SECRETARY">
+                            <option value="JOINT WOMEN'S SECRETARY">
+                            <option value="MEDIA SECRETARY">
+                            <option value="ASSISTANT MEDIA SECRETARY">
+                            <option value="OFFICE SECRETARY">
+                            <option value="ASSISTANT OFFICE SECRETARY">
+                            <option value="ORGANIZING SECRETARY">
+                            <option value="ASSISTANT ORGANIZING SECRETARY">
+                            <option value="PRESS SECRETARY">
+                            <option value="ASSISTANT PRESS SECRETARY">
+                            <option value="EXECUTIVE MEMBER">
+                        </datalist>
                     </div>
-                    <div class="input-group" style="flex: 1;">
-                        <label>Role Color</label>
+                    <div class="input-group">
+                        <label>Typography</label>
+                        <select id="roleFontInp" onchange="syncFront()">
+                            <option value="Archivo Black">Archivo Black</option>
+                            <option value="Stack Sans Notch">Stack Sans Notch</option>
+                            <option value="Unbounded">Unbounded</option>
+                            <option value="Monoton">Monoton</option>
+                            <option value="Audiowide">Audiowide</option>
+                            <option value="Paytone One">Paytone One</option>
+                            <option value="Rowdies">Rowdies</option>
+                            <option value="Lilita One">Lilita One</option>
+                            <option value="Arial Black">Black 900</option>
+                            <option value="Libre Barcode 39 Text">Libre Barcode 39</option>
+                            <option value="Wallpoet">Wallpoet</option>
+                            <option value="Bungee Inline">Bungee Inline</option>
+                            <option value="Alumni Sans Inline One">Alumni Sans</option>
+                            <option value="Zen Tokyo Zoo">Zen Tokyo Zoo</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Text Color</label>
                         <input type="color" id="roleColorInp" value="#00b300" oninput="syncFront()">
                     </div>
-                </div>
-                <div class="sliders-row">
-                    <div class="input-group" style="flex: 1;">
-                        <label>Role X (Left/Right)</label>
-                        <input type="range" id="roleOffsetXInp" min="-500" max="500" step="1" value="0" oninput="syncFront()">
-                    </div>
-                    <div class="input-group" style="flex: 1;">
-                        <label>Role Y (Up/Down)</label>
-                        <input type="range" id="roleOffsetYInp" min="-500" max="500" step="1" value="0" oninput="syncFront()">
+                    <div class="input-group column-mode">
+                        <div class="sliders-row">
+                            <div style="flex:1"><label style="font-size:11px;color:var(--label-secondary)">Scale</label></div>
+                            <div style="flex:1"><label style="font-size:11px;color:var(--label-secondary)">X Axis</label></div>
+                            <div style="flex:1"><label style="font-size:11px;color:var(--label-secondary)">Y Axis</label></div>
+                        </div>
+                        <div class="sliders-row">
+                            <input type="range" id="roleSizeInp" min="0.3" max="2.5" step="0.02" value="1.0" oninput="syncFront()">
+                            <input type="range" id="roleOffsetXInp" min="-500" max="500" step="1" value="0" oninput="syncFront()">
+                            <input type="range" id="roleOffsetYInp" min="-500" max="500" step="1" value="0" oninput="syncFront()">
+                        </div>
                     </div>
                 </div>
             </div>
             
-            <!-- SECTION 2: NAME CONTROLS (Moved to Bottom) -->
-            <div class="control-section">
-                <div class="section-title">Name Settings</div>
-                <div class="input-group">
-                    <label>Candidate Name</label>
-                    <input type="text" id="nameInp" value="JOHN DOE" placeholder="Enter Full Name" oninput="syncFront()">
-                </div>
-                <div class="input-group">
-                    <label>Name Font</label>
-                    <select id="nameFontInp" onchange="syncFront()">
-                        <option value="Archivo Black">Archivo Black</option>
-                        <option value="Stack Sans Notch">Stack Sans Notch</option>
-                        <option value="Unbounded">Unbounded</option>
-                        <option value="Monoton">Monoton</option>
-                        <option value="Audiowide">Audiowide</option>
-                        <option value="Paytone One">Paytone One</option>
-                        <option value="Rowdies">Rowdies</option>
-                        <option value="Lilita One">Lilita One</option>
-                        <option value="Arial Black">Black 900 (Arial Black)</option>
-                        <option value="Libre Barcode 39 Text">Libre Barcode 39 Text</option>
-                        <option value="Wallpoet">Wallpoet</option>
-                        <option value="Bungee Inline">Bungee Inline</option>
-                        <option value="Boldonse">Boldonse</option>
-                        <option value="BBH Bartle">BBH Bartle</option>
-                        <option value="Jersey 20 Charted">Jersey 20 Charted</option>
-                        <option value="Jersey 25 Charted">Jersey 25 Charted</option>
-                        <option value="Rubik Broken Fax">Rubik Broken Fax</option>
-                        <option value="Rubik Glitch Pop">Rubik Glitch Pop</option>
-                        <option value="Rubik Lines">Rubik Lines</option>
-                        <option value="Alumni Sans Inline One">Alumni Sans Inline One</option>
-                        <option value="Zen Tokyo Zoo">Zen Tokyo Zoo</option>
-                    </select>
-                </div>
-                <div class="sliders-row">
-                    <div class="input-group" style="flex: 1;">
-                        <label>Name Zoom</label>
-                        <input type="range" id="nameSizeInp" min="0.5" max="2.5" step="0.05" value="1.0" oninput="syncFront()">
+            <!-- SECTION 2: NAME CONTROLS -->
+            <div>
+                <div class="section-header">Identity</div>
+                <div class="control-section">
+                    <div class="input-group">
+                        <label>Name</label>
+                        <input type="text" id="nameInp" value="SADAT MAHMUD" placeholder="Full Name" oninput="syncFront()">
                     </div>
-                    <div class="input-group" style="flex: 1;">
-                        <label>Name Color</label>
+                    <div class="input-group">
+                        <label>Typography</label>
+                        <select id="nameFontInp" onchange="syncFront()">
+                            <option value="Archivo Black">Archivo Black</option>
+                            <option value="Stack Sans Notch">Stack Sans Notch</option>
+                            <option value="Unbounded">Unbounded</option>
+                            <option value="Monoton">Monoton</option>
+                            <option value="Audiowide">Audiowide</option>
+                            <option value="Paytone One">Paytone One</option>
+                            <option value="Rowdies">Rowdies</option>
+                            <option value="Lilita One">Lilita One</option>
+                            <option value="Arial Black">Black 900</option>
+                            <option value="Libre Barcode 39 Text">Libre Barcode 39</option>
+                            <option value="Wallpoet">Wallpoet</option>
+                            <option value="Bungee Inline">Bungee Inline</option>
+                            <option value="Alumni Sans Inline One">Alumni Sans</option>
+                            <option value="Zen Tokyo Zoo">Zen Tokyo Zoo</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Text Color</label>
                         <input type="color" id="nameColorInp" value="#0a1172" oninput="syncFront()">
                     </div>
-                </div>
-                <div class="sliders-row">
-                    <div class="input-group" style="flex: 1;">
-                        <label>Name X (Left/Right)</label>
-                        <input type="range" id="nameOffsetXInp" min="-500" max="500" step="1" value="0" oninput="syncFront()">
-                    </div>
-                    <div class="input-group" style="flex: 1;">
-                        <label>Name Y (Up/Down)</label>
-                        <input type="range" id="nameOffsetYInp" min="-500" max="500" step="1" value="0" oninput="syncFront()">
+                    <div class="input-group column-mode">
+                        <div class="sliders-row">
+                            <div style="flex:1"><label style="font-size:11px;color:var(--label-secondary)">Scale</label></div>
+                            <div style="flex:1"><label style="font-size:11px;color:var(--label-secondary)">X Axis</label></div>
+                            <div style="flex:1"><label style="font-size:11px;color:var(--label-secondary)">Y Axis</label></div>
+                        </div>
+                        <div class="sliders-row">
+                            <input type="range" id="nameSizeInp" min="0.3" max="2.5" step="0.02" value="1.0" oninput="syncFront()">
+                            <input type="range" id="nameOffsetXInp" min="-500" max="500" step="1" value="0" oninput="syncFront()">
+                            <input type="range" id="nameOffsetYInp" min="-500" max="500" step="1" value="0" oninput="syncFront()">
+                        </div>
                     </div>
                 </div>
             </div>
 
             <!-- SECTION 3: PHOTO CONTROLS -->
-            <div class="control-section">
-                <div class="section-title">Candidate Photo</div>
-                <div class="input-group">
-                    <input type="file" id="fileInp" accept="image/*" onchange="handleImg(event)">
-                </div>
-                <div class="input-group">
-                    <label>Photo Zoom</label>
-                    <input type="range" id="scaleInp" min="0.5" max="3.0" step="0.05" value="1.0" oninput="syncFront()">
-                </div>
-                <div class="sliders-row">
-                    <div class="input-group" style="flex: 1;">
-                        <label>Photo X</label>
-                        <input type="range" id="offsetXInp" min="-100" max="100" step="1" value="0" oninput="syncFront()">
+            <div>
+                <div class="section-header">Portrait</div>
+                <div class="control-section">
+                    <div class="input-group column-mode">
+                        <label for="fileInp" class="file-upload-btn">Choose Image...</label>
+                        <input type="file" id="fileInp" accept="image/*" onchange="handleImg(event)">
                     </div>
-                    <div class="input-group" style="flex: 1;">
-                        <label>Photo Y</label>
-                        <input type="range" id="offsetYInp" min="-100" max="100" step="1" value="0" oninput="syncFront()">
+                    <div class="input-group column-mode">
+                        <div class="sliders-row">
+                            <div style="flex:1"><label style="font-size:11px;color:var(--label-secondary)">Zoom</label></div>
+                            <div style="flex:1"><label style="font-size:11px;color:var(--label-secondary)">X Axis</label></div>
+                            <div style="flex:1"><label style="font-size:11px;color:var(--label-secondary)">Y Axis</label></div>
+                        </div>
+                        <div class="sliders-row">
+                            <input type="range" id="scaleInp" min="0.5" max="3.0" step="0.05" value="1.0" oninput="syncFront()">
+                            <input type="range" id="offsetXInp" min="-100" max="100" step="1" value="0" oninput="syncFront()">
+                            <input type="range" id="offsetYInp" min="-100" max="100" step="1" value="0" oninput="syncFront()">
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <button class="btn btn-primary" onclick="downloadIDCard('front')">Download Front ID</button>
+            <button class="btn btn-primary" onclick="downloadIDCard('front')">Export Front Card</button>
         </div>
 
         <!-- Settings Panel: BACK -->
         <div class="controls tab-content" id="controls-back">
-            <div class="control-section">
-                <div class="section-title">Back Details</div>
-                <div class="input-group">
-                    <label>ID Number</label>
-                    <input type="text" id="idNumInp" value="1234567890" placeholder="e.g. 1234567890" oninput="syncBack()">
-                </div>
-
-                <div class="input-group">
-                    <label>Blood Group</label>
-                    <input type="text" id="bloodInp" value="A+" placeholder="e.g. A+" oninput="syncBack()">
-                </div>
-
-                <div class="input-group">
-                    <label>Phone Number</label>
-                    <input type="text" id="phoneInp" value="+8801234567890" placeholder="e.g. +8801234567890" oninput="syncBack()">
-                </div>
-
-                <div class="input-group">
-                    <label>Email Address</label>
-                    <input type="text" id="emailInp" value="STUDENT@EXAMPLE.COM" placeholder="Email" oninput="syncBack()">
+            <div>
+                <div class="section-header">Card Information</div>
+                <div class="control-section">
+                    <div class="input-group">
+                        <label>ID Number</label>
+                        <input type="text" id="idNumInp" value="1234567890" placeholder="1234567890" oninput="syncBack()">
+                    </div>
+                    <div class="input-group">
+                        <label>Blood Group</label>
+                        <input type="text" id="bloodInp" value="A+" placeholder="A+" oninput="syncBack()">
+                    </div>
+                    <div class="input-group">
+                        <label>Phone</label>
+                        <input type="text" id="phoneInp" value="+8801234567890" placeholder="+8801234567890" oninput="syncBack()">
+                    </div>
+                    <div class="input-group">
+                        <label>Email</label>
+                        <input type="text" id="emailInp" value="STUDENT@EXAMPLE.COM" placeholder="Email" oninput="syncBack()">
+                    </div>
                 </div>
             </div>
 
-            <div class="control-section">
-                <div class="section-title">Back Side Styling</div>
-                <div class="input-group">
-                    <label>Text Font</label>
-                    <select id="backFontInp" onchange="syncBack()">
-                        <option value="Montserrat">Montserrat</option>
-                        <option value="Stack Sans Notch">Stack Sans Notch</option>
-                        <option value="Archivo Black">Archivo Black</option>
-                        <option value="Unbounded">Unbounded</option>
-                        <option value="Monoton">Monoton</option>
-                        <option value="Audiowide">Audiowide</option>
-                        <option value="Paytone One">Paytone One</option>
-                        <option value="Rowdies">Rowdies</option>
-                        <option value="Lilita One">Lilita One</option>
-                        <option value="Arial Black">Black 900 (Arial Black)</option>
-                        <option value="Libre Barcode 39 Text">Libre Barcode 39 Text</option>
-                        <option value="Wallpoet">Wallpoet</option>
-                        <option value="Bungee Inline">Bungee Inline</option>
-                        <option value="Boldonse">Boldonse</option>
-                        <option value="BBH Bartle">BBH Bartle</option>
-                        <option value="Jersey 20 Charted">Jersey 20 Charted</option>
-                        <option value="Jersey 25 Charted">Jersey 25 Charted</option>
-                        <option value="Rubik Broken Fax">Rubik Broken Fax</option>
-                        <option value="Rubik Glitch Pop">Rubik Glitch Pop</option>
-                        <option value="Rubik Lines">Rubik Lines</option>
-                        <option value="Alumni Sans Inline One">Alumni Sans Inline One</option>
-                        <option value="Zen Tokyo Zoo">Zen Tokyo Zoo</option>
-                    </select>
-                </div>
-                <div class="input-group">
-                    <label>Text Color</label>
-                    <input type="color" id="backColorInp" value="#000000" oninput="syncBack()">
+            <div>
+                <div class="section-header">Appearance</div>
+                <div class="control-section">
+                    <div class="input-group">
+                        <label>Typography</label>
+                        <select id="backFontInp" onchange="syncBack()">
+                            <option value="Montserrat">Montserrat</option>
+                            <option value="Stack Sans Notch">Stack Sans Notch</option>
+                            <option value="Archivo Black">Archivo Black</option>
+                            <option value="Unbounded">Unbounded</option>
+                            <option value="Audiowide">Audiowide</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Text Color</label>
+                        <input type="color" id="backColorInp" value="#000000" oninput="syncBack()">
+                    </div>
                 </div>
             </div>
 
-            <div class="control-section">
-                <div class="section-title">QR Code System</div>
-                <div class="input-group">
-                    <label>Custom QR Code (Link or Text)</label>
-                    <div style="display: flex; gap: 10px;">
-                        <input type="text" id="qrInp" value="https://example.com/" placeholder="https://your-link.com" oninput="updateQR()" style="flex: 1;">
-                        <button type="button" onclick="updateQR()" style="padding: 0 15px; border-radius: 6px; background: #30363d; color: white; border: none; cursor: pointer; font-family: 'Orbitron', sans-serif; font-size: 11px; transition: 0.2s;">GENERATE</button>
+            <div>
+                <div class="section-header">QR Generation</div>
+                <div class="control-section">
+                    <div class="input-group column-mode">
+                        <label>Link or Text Data</label>
+                        <input type="text" id="qrInp" value="https://daffodilvarsity.edu.bd/" style="max-width:100%" placeholder="URL or Data" oninput="updateQR()">
                     </div>
-                    <p class="tip">Enter a website link or text, then generate your custom QR.</p>
-                </div>
-                <div class="sliders-row" style="margin-top: 5px;">
-                    <div class="input-group" style="flex: 1;">
-                        <label>QR Size (Zoom)</label>
-                        <input type="range" id="qrSizeInp" min="0.5" max="2.0" step="0.05" value="1.0" oninput="updateQRZoom()">
-                    </div>
-                    <div class="input-group" style="flex: 1;">
+                    <div class="input-group">
                         <label>QR Color</label>
                         <input type="color" id="qrColorInp" value="#000000" oninput="updateQR()">
                     </div>
+                    <div class="input-group">
+                        <label>QR Scale</label>
+                        <input type="range" id="qrSizeInp" min="0.5" max="2.0" step="0.05" value="1.0" oninput="updateQRZoom()">
+                    </div>
                 </div>
             </div>
 
-            <button class="btn btn-primary" onclick="downloadIDCard('back')">Download Back ID</button>
+            <button class="btn btn-primary" onclick="downloadIDCard('back')">Export Back Card</button>
         </div>
 
         <!-- Live Preview: FRONT -->
         <div class="preview-container tab-content active" id="preview-front">
-            <div class="id-card-wrapper" id="capture-area">
-                <!-- Layer 1: Blank Template Background -->
+            <div class="id-card-wrapper" id="capture-area-front">
                 <div class="id-bg"></div>
-                
-                <!-- Layer 2: User Photo (Clipped to not cover bottom UI) -->
                 <div class="id-photo-area">
                     <img id="viewPhoto" src="" class="id-photo" style="display: none;">
                 </div>
-
-                <!-- Layer 3: Dynamic Text Overlay -->
                 <div class="id-overlay">
                     <div class="id-role" id="viewPos">PRESIDENT</div>
-                    <div class="id-name" id="viewName">JOHN DOE</div>
+                    <div class="id-name" id="viewName">SADAT MAHMUD</div>
                 </div>
             </div>
-            <p style="margin-top: 15px; font-size: 13px; color: #8b949e; font-family: 'Montserrat', sans-serif;">Live Front Preview</p>
+            <p class="preview-label">Live Preview Engine Synchronized</p>
         </div>
 
         <!-- Live Preview: BACK -->
         <div class="preview-container tab-content" id="preview-back">
-            <div class="id-card-wrapper">
-                <!-- Layer 1: Blank Back Template -->
+            <div class="id-card-wrapper" id="capture-area-back">
                 <div class="id-bg-back"></div>
-                
-                <!-- Layer 2: QR Code -->
                 <div class="id-qr-area">
-                    <img id="viewQR" src="https://quickchart.io/qr?size=400&text=https%3A%2F%2Fexample.com%2F&dark=000000" class="id-qr" crossorigin="anonymous" alt="QR Code">
+                    <!-- Base size loaded initially -->
+                    <img id="viewQR" src="https://quickchart.io/qr?size=400&text=https%3A%2F%2Fdaffodilvarsity.edu.bd%2F&dark=000000" class="id-qr" crossorigin="anonymous" alt="QR Code">
                 </div>
-
-                <!-- Layer 3: Text Data -->
-                <div class="id-back-text b-id-num" id="viewIdNum">ID 1234567890</div>
-                <div class="id-back-text b-blood-lbl">BLOOD GROUPE</div>
-                <div class="id-back-text b-blood-val" id="viewBlood">A+</div>
-                <div class="id-back-text b-phone" id="viewPhone">PHONE +8801234567890</div>
-                <div class="id-back-text b-email" id="viewEmail">STUDENT@EXAMPLE.COM</div>
+                <div class="id-back-text" id="viewIdNum">ID 1234567890</div>
+                <div class="id-back-text" id="viewBloodLbl">BLOOD GROUPE</div>
+                <div class="id-back-text" id="viewBlood">A+</div>
+                <div class="id-back-text" id="viewPhone">PHONE +8801234567890</div>
+                <div class="id-back-text" id="viewEmail">STUDENT@EXAMPLE.COM</div>
             </div>
-            <p style="margin-top: 15px; font-size: 13px; color: #8b949e; font-family: 'Montserrat', sans-serif;">Live Back Preview</p>
+            <p class="preview-label">Live Preview Engine Synchronized</p>
         </div>
 
     </div>
@@ -668,14 +643,14 @@
         let userImg = null;
         let qrTimeout = null;
         
-        // This ratio maps the High-Res Canvas Slider Pixels to the Live HTML Preview scale
-        const UI_TO_CANVAS_RATIO = 1200 / 420; // Canvas Width / Preview Width
+        // Base Canvas Dimensions 
+        const CANVAS_W = 1200;
+        const CANVAS_H = 1920;
 
         // Image URLs
         const bgImgUrlFront = 'https://raw.githubusercontent.com/SadatPro/img/refs/heads/main/NEW_ESRC_ID_CARD2.jpg';
         const bgImgUrlBack = 'https://raw.githubusercontent.com/SadatPro/img/refs/heads/main/NEW_ESRC_BLANC_BACK_ID_CARD.jpg';
 
-        // Load images safely for Canvas
         const loadImage = (url) => {
             return new Promise((resolve, reject) => {
                 const img = new Image();
@@ -686,7 +661,6 @@
             });
         };
 
-        // Tab Switcher
         function switchTab(side) {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById('btn-' + side).classList.add('active');
@@ -694,9 +668,12 @@
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
             document.getElementById('controls-' + side).classList.add('active');
             document.getElementById('preview-' + side).classList.add('active');
+            
+            // Re-sync sizes on tab switch in case preview width changed
+            if (side === 'front') syncFront();
+            if (side === 'back') syncBack();
         }
 
-        // Photo Upload Handler
         function handleImg(e) {
             const file = e.target.files[0];
             if(!file) return;
@@ -714,131 +691,226 @@
             reader.readAsDataURL(file);
         }
 
-        // Sync Front Panel Settings (Text, Fonts, Offsets, Colors, Sizes)
+        // --- MATH SYNCHRONIZATION CORE ---
         function syncFront() {
-            // Text Content
-            const name = document.getElementById('nameInp').value || "";
-            const pos = document.getElementById('posInp').value || "";
+            const wrapper = document.getElementById('capture-area-front');
+            if (!wrapper) return;
+            
+            const previewWidth = wrapper.offsetWidth;
+            const scaleRatio = previewWidth / CANVAS_W; // Multiplier to map Canvas pixels to DOM pixels
+
+            // Variables
+            const nameText = document.getElementById('nameInp').value || "";
+            const posText = document.getElementById('posInp').value || "";
+            
             const nameEl = document.getElementById('viewName');
             const posEl = document.getElementById('viewPos');
             
-            nameEl.innerText = name.toUpperCase();
-            posEl.innerText = pos.toUpperCase();
+            nameEl.innerText = nameText.toUpperCase();
+            posEl.innerText = posText.toUpperCase();
 
-            // Colors
+            // Colors & Fonts
             const nameColor = document.getElementById('nameColorInp').value;
             const roleColor = document.getElementById('roleColorInp').value;
             nameEl.style.color = nameColor;
             posEl.style.color = roleColor;
 
-            // Font Families
             const nameFont = document.getElementById('nameFontInp').value;
             const roleFont = document.getElementById('roleFontInp').value;
             nameEl.style.fontFamily = `"${nameFont}", sans-serif`;
             posEl.style.fontFamily = `"${roleFont}", sans-serif`;
+            
+            // Explicitly set normal weight so decorative fonts match canvas
+            nameEl.style.fontWeight = 'normal';
+            posEl.style.fontWeight = 'normal';
 
-            // Zoom / Scaling (Base Sizes: Name = 1.3rem, Role = 2.2rem)
+            // Text Scaling Math
             const nameScale = parseFloat(document.getElementById('nameSizeInp').value) || 1.0;
             const roleScale = parseFloat(document.getElementById('roleSizeInp').value) || 1.0;
-            nameEl.style.fontSize = `${1.3 * nameScale}rem`;
-            posEl.style.fontSize = `${2.2 * roleScale}rem`;
-
-            // Text Offsets (Scaled for live preview)
-            const nameOffsetX = document.getElementById('nameOffsetXInp').value / UI_TO_CANVAS_RATIO;
-            const nameOffsetY = document.getElementById('nameOffsetYInp').value / UI_TO_CANVAS_RATIO;
-            const roleOffsetX = document.getElementById('roleOffsetXInp').value / UI_TO_CANVAS_RATIO;
-            const roleOffsetY = document.getElementById('roleOffsetYInp').value / UI_TO_CANVAS_RATIO;
-
-            nameEl.style.transform = `translate(${nameOffsetX}px, ${nameOffsetY}px)`;
-            posEl.style.transform = `translate(${roleOffsetX}px, ${roleOffsetY}px)`;
-
-            // Photo Offsets
-            const scale = document.getElementById('scaleInp').value;
-            const offsetX = document.getElementById('offsetXInp').value;
-            const offsetY = document.getElementById('offsetYInp').value;
-            const photoEl = document.getElementById('viewPhoto');
             
-            if(photoEl && photoEl.src) {
-                photoEl.style.transform = `translate(${offsetX}%, ${offsetY}%) scale(${scale})`;
+            const canvasNameSize = 60 * nameScale;
+            const canvasRoleSize = 105 * roleScale; // Base size map
+            
+            nameEl.style.fontSize = `${canvasNameSize * scaleRatio}px`;
+            posEl.style.fontSize = `${canvasRoleSize * scaleRatio}px`;
+
+            // Text Offset Math
+            const nameOffsetX = parseFloat(document.getElementById('nameOffsetXInp').value) || 0;
+            const nameOffsetY = parseFloat(document.getElementById('nameOffsetYInp').value) || 0;
+            const roleOffsetX = parseFloat(document.getElementById('roleOffsetXInp').value) || 0;
+            const roleOffsetY = parseFloat(document.getElementById('roleOffsetYInp').value) || 0;
+
+            // Positioning Name
+            nameEl.style.left = `${(CANVAS_W * 0.61 + nameOffsetX) * scaleRatio}px`;
+            nameEl.style.top = `${(CANVAS_H * 0.96 + nameOffsetY) * scaleRatio}px`;
+            nameEl.style.transform = `translate(-50%, 0)`;
+
+            // Positioning Role
+            posEl.style.left = `${(CANVAS_W * 0.929 + roleOffsetX) * scaleRatio}px`;
+            posEl.style.top = `${(CANVAS_H * 0.25 + roleOffsetY) * scaleRatio}px`;
+            posEl.style.transform = `rotate(90deg)`;
+
+            // Photo Mapping Math
+            const photoEl = document.getElementById('viewPhoto');
+            if(userImg && photoEl && photoEl.src) {
+                const scale = parseFloat(document.getElementById('scaleInp').value) || 1.0;
+                const offsetXPercent = parseFloat(document.getElementById('offsetXInp').value) || 0;
+                const offsetYPercent = parseFloat(document.getElementById('offsetYInp').value) || 0;
+
+                const clipHeight = CANVAS_H * 0.650; 
+                const aspect = userImg.naturalWidth / userImg.naturalHeight;
+                
+                const baseTargetH = clipHeight;
+                const baseTargetW = baseTargetH * aspect;
+
+                const finalW = baseTargetW * scale;
+                const finalH = baseTargetH * scale;
+
+                const userOffsetXPixels = (offsetXPercent / 100) * baseTargetW;
+                const canvasImgX = ((CANVAS_W - finalW) / 2) + userOffsetXPixels;
+                
+                const scaleOffset = baseTargetH - finalH; 
+                const userOffsetYPixels = (offsetYPercent / 100) * baseTargetH;
+                const canvasImgY = scaleOffset + userOffsetYPixels;
+
+                photoEl.style.width = `${finalW * scaleRatio}px`;
+                photoEl.style.height = `${finalH * scaleRatio}px`;
+                photoEl.style.left = `${canvasImgX * scaleRatio}px`;
+                photoEl.style.top = `${canvasImgY * scaleRatio}px`;
             }
         }
 
-        // Sync Back Panel Text
         function syncBack() {
+            const wrapper = document.getElementById('capture-area-back');
+            if (!wrapper) return;
+            
+            const previewWidth = wrapper.offsetWidth;
+            const scaleRatio = previewWidth / CANVAS_W;
+
             document.getElementById('viewIdNum').innerText = "ID " + document.getElementById('idNumInp').value;
             document.getElementById('viewBlood').innerText = document.getElementById('bloodInp').value.toUpperCase();
             document.getElementById('viewPhone').innerText = "PHONE " + document.getElementById('phoneInp').value;
             document.getElementById('viewEmail').innerText = document.getElementById('emailInp').value.toUpperCase();
 
-            // Font Families and Colors for Back
             const backFont = document.getElementById('backFontInp').value;
             const backColor = document.getElementById('backColorInp').value;
             
-            const backTexts = document.querySelectorAll('.id-back-text');
-            backTexts.forEach(el => {
-                el.style.fontFamily = `"${backFont}", sans-serif`;
-                el.style.color = backColor;
+            const textsToMap = [
+                { id: 'viewIdNum',   yPct: 0.545, size: 50, weight: "bold" },
+                { id: 'viewBloodLbl',yPct: 0.595, size: 45, weight: "normal" },
+                { id: 'viewBlood',   yPct: 0.635, size: 75, weight: "bold" },
+                { id: 'viewPhone',   yPct: 0.890, size: 50, weight: "bold" },
+                { id: 'viewEmail',   yPct: 0.950, size: 42, weight: "bold" }
+            ];
+
+            textsToMap.forEach(t => {
+                const el = document.getElementById(t.id);
+                if (el) {
+                    el.style.fontFamily = `"${backFont}", sans-serif`;
+                    el.style.color = backColor;
+                    el.style.fontWeight = t.weight;
+                    
+                    el.style.fontSize = `${t.size * scaleRatio}px`;
+                    el.style.left = `${(CANVAS_W / 2) * scaleRatio}px`;
+                    el.style.top = `${(CANVAS_H * t.yPct) * scaleRatio}px`;
+                    el.style.transform = `translate(-50%, 0)`; 
+                }
             });
             
             updateQRZoom();
         }
 
-        // Handles purely the CSS scale for live preview
         function updateQRZoom() {
+            const wrapper = document.getElementById('capture-area-back');
+            if (!wrapper) return;
+            const scaleRatio = wrapper.offsetWidth / CANVAS_W;
+
             const qrScale = parseFloat(document.getElementById('qrSizeInp').value) || 1.0;
+            const baseQrSize = CANVAS_W * 0.40; 
+            const qrSize = baseQrSize * qrScale;
+            
+            const originalCenterX = CANVAS_W / 2;
+            const originalCenterY = (CANVAS_H * 0.25) + (baseQrSize / 2);
+            
+            const qrX = originalCenterX - (qrSize / 2);
+            const qrY = originalCenterY - (qrSize / 2);
+            const padding = 15 * qrScale;
+
             const qrEl = document.getElementById('viewQR');
             if (qrEl) {
-                qrEl.style.transform = `scale(${qrScale})`;
+                qrEl.style.width = `${qrSize * scaleRatio}px`;
+                qrEl.style.height = `${qrSize * scaleRatio}px`;
+                qrEl.style.left = `${qrX * scaleRatio}px`;
+                qrEl.style.top = `${qrY * scaleRatio}px`;
+                qrEl.style.padding = `${padding * scaleRatio}px`;
+                qrEl.style.borderRadius = `${15 * scaleRatio}px`;
             }
         }
 
-        // Debounced QR Code API Updater (Data + Color)
         function updateQR() {
             clearTimeout(qrTimeout);
             qrTimeout = setTimeout(() => {
                 const data = document.getElementById('qrInp').value || "https://example.com/";
-                // Get color and remove the hash '#' for the quickchart.io API
                 const colorCode = document.getElementById('qrColorInp').value.replace('#', '');
                 document.getElementById('viewQR').src = `https://quickchart.io/qr?size=400&text=${encodeURIComponent(data)}&dark=${colorCode}`;
             }, 500);
         }
 
+        // Keep mappings responsive
+        window.addEventListener('resize', () => {
+            syncFront();
+            syncBack();
+        });
+
         // High-Res Render & Download
         async function downloadIDCard(side) {
+            // FORCE PRE-LOAD FONTS FOR CANVAS API
+            try {
+                const rFont = document.getElementById('roleFontInp').value;
+                const nFont = document.getElementById('nameFontInp').value;
+                const bFont = document.getElementById('backFontInp').value;
+                
+                // Explicity fetch these into document.fonts array to prevent Canvas fallback failure
+                if (side === 'front') {
+                    await document.fonts.load(`normal 10px "${rFont}"`);
+                    await document.fonts.load(`normal 10px "${nFont}"`);
+                } else {
+                    await document.fonts.load(`normal 10px "${bFont}"`);
+                    await document.fonts.load(`bold 10px "${bFont}"`);
+                }
+            } catch (e) {
+                console.warn("Font Preload Issue: ", e);
+            }
             await document.fonts.ready;
 
             const canvas = document.getElementById('render-canvas');
             const ctx = canvas.getContext('2d');
             
-            const width = 1200;
-            const height = 1920; 
-            canvas.width = width;
-            canvas.height = height;
+            canvas.width = CANVAS_W;
+            canvas.height = CANVAS_H;
 
             if (side === 'front') {
-                // 1. Load Background Template
                 const bg = await loadImage(bgImgUrlFront).catch(() => null);
                 if (bg) {
-                    ctx.drawImage(bg, 0, 0, width, height);
+                    ctx.drawImage(bg, 0, 0, CANVAS_W, CANVAS_H);
                 } else {
                     ctx.fillStyle = "#ffffff";
-                    ctx.fillRect(0, 0, width, height);
+                    ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
                 }
 
-                // 2. Draw Candidate Photo with Clipping
                 if (userImg) {
                     const scale = parseFloat(document.getElementById('scaleInp').value) || 1.0;
                     const offsetXPercent = parseFloat(document.getElementById('offsetXInp').value) || 0;
                     const offsetYPercent = parseFloat(document.getElementById('offsetYInp').value) || 0;
 
-                    const clipHeight = height * 0.650; // Updated to 65.0%
+                    const clipHeight = CANVAS_H * 0.650; 
 
                     ctx.save();
                     ctx.beginPath();
-                    ctx.rect(0, 0, width, clipHeight);
+                    ctx.rect(0, 0, CANVAS_W, clipHeight);
                     ctx.clip();
 
-                    const aspect = userImg.width / userImg.height;
+                    const aspect = userImg.naturalWidth / userImg.naturalHeight;
                     const baseTargetH = clipHeight;
                     const baseTargetW = baseTargetH * aspect;
 
@@ -846,7 +918,7 @@
                     const finalH = baseTargetH * scale;
 
                     const userOffsetXPixels = (offsetXPercent / 100) * baseTargetW;
-                    const imgX = ((width - finalW) / 2) + userOffsetXPixels;
+                    const imgX = ((CANVAS_W - finalW) / 2) + userOffsetXPixels;
                     
                     const scaleOffset = baseTargetH - finalH; 
                     const userOffsetYPixels = (offsetYPercent / 100) * baseTargetH;
@@ -856,34 +928,25 @@
                     ctx.restore(); 
                 }
 
-                // Retrieve Settings for Role Canvas Draw
-                const roleFont = document.getElementById('roleFontInp').value;
-                const roleColor = document.getElementById('roleColorInp').value;
-                const roleScale = parseFloat(document.getElementById('roleSizeInp').value) || 1.0;
-                const roleOffsetX = parseFloat(document.getElementById('roleOffsetXInp').value) || 0;
-                const roleOffsetY = parseFloat(document.getElementById('roleOffsetYInp').value) || 0;
-                const canvasRoleSize = 90 * roleScale;
-                
-                // Retrieve Settings for Name Canvas Draw
-                const nameFont = document.getElementById('nameFontInp').value;
-                const nameColor = document.getElementById('nameColorInp').value;
-                const nameScale = parseFloat(document.getElementById('nameSizeInp').value) || 1.0;
-                const nameOffsetX = parseFloat(document.getElementById('nameOffsetXInp').value) || 0;
-                const nameOffsetY = parseFloat(document.getElementById('nameOffsetYInp').value) || 0;
-                const canvasNameSize = 55 * nameScale;
-
                 // 3. Draw Vertical Position (Top to Bottom)
                 const pos = document.getElementById('posInp').value.toUpperCase();
                 if (pos) {
+                    const roleFont = document.getElementById('roleFontInp').value;
+                    const roleColor = document.getElementById('roleColorInp').value;
+                    const roleScale = parseFloat(document.getElementById('roleSizeInp').value) || 1.0;
+                    const roleOffsetX = parseFloat(document.getElementById('roleOffsetXInp').value) || 0;
+                    const roleOffsetY = parseFloat(document.getElementById('roleOffsetYInp').value) || 0;
+                    const canvasRoleSize = 105 * roleScale;
+
                     ctx.save();
-                    // Apply user offsets to the canvas translation point
-                    ctx.translate((width - 85) + roleOffsetX, (height * 0.25) + roleOffsetY); 
+                    ctx.translate((CANVAS_W * 0.929) + roleOffsetX, (CANVAS_H * 0.25) + roleOffsetY); 
                     ctx.rotate(Math.PI / 2); 
                     
                     ctx.fillStyle = roleColor;
-                    ctx.font = `900 ${canvasRoleSize}px "${roleFont}", sans-serif`;
+                    // Removed '900' weight constraint; using 'normal' ensures custom fonts do not fail in Canvas
+                    ctx.font = `normal ${canvasRoleSize}px "${roleFont}", sans-serif`;
                     ctx.textAlign = 'left';
-                    ctx.textBaseline = 'middle';
+                    ctx.textBaseline = 'top'; 
                     ctx.letterSpacing = "2px"; 
                     
                     ctx.fillText(pos, 0, 0);
@@ -893,26 +956,32 @@
                 // 4. Draw Horizontal Name Text
                 const name = document.getElementById('nameInp').value.toUpperCase();
                 if (name) {
+                    const nameFont = document.getElementById('nameFontInp').value;
+                    const nameColor = document.getElementById('nameColorInp').value;
+                    const nameScale = parseFloat(document.getElementById('nameSizeInp').value) || 1.0;
+                    const nameOffsetX = parseFloat(document.getElementById('nameOffsetXInp').value) || 0;
+                    const nameOffsetY = parseFloat(document.getElementById('nameOffsetYInp').value) || 0;
+                    const canvasNameSize = 60 * nameScale;
+
+                    ctx.save();
                     ctx.fillStyle = nameColor;
-                    ctx.font = `400 ${canvasNameSize}px "${nameFont}", sans-serif`;
+                    // Removed '400' weight constraint; using 'normal'
+                    ctx.font = `normal ${canvasNameSize}px "${nameFont}", sans-serif`;
                     ctx.textAlign = 'center';
+                    ctx.textBaseline = 'top'; 
+                    ctx.letterSpacing = "1px"; 
                     
-                    const leftBoundary = width * 0.26;
-                    const rightBoundary = width * 0.96;
-                    const paddedCenter = leftBoundary + ((rightBoundary - leftBoundary) / 2);
-                    
-                    // Apply user offsets
-                    ctx.fillText(name, paddedCenter + nameOffsetX, (height - 48) + nameOffsetY); 
+                    ctx.fillText(name, (CANVAS_W * 0.61) + nameOffsetX, (CANVAS_H * 0.96) + nameOffsetY); 
+                    ctx.restore();
                 }
             } 
             else if (side === 'back') {
-                // 1. Load Background Template
                 const bg = await loadImage(bgImgUrlBack).catch(() => null);
                 if (bg) {
-                    ctx.drawImage(bg, 0, 0, width, height);
+                    ctx.drawImage(bg, 0, 0, CANVAS_W, CANVAS_H);
                 } else {
                     ctx.fillStyle = "#ffffff";
-                    ctx.fillRect(0, 0, width, height);
+                    ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
                 }
 
                 // 2. Draw QR Code
@@ -921,21 +990,22 @@
                     const qrImg = await loadImage(qrImgEl.src).catch(() => null);
                     if (qrImg) {
                         const qrScale = parseFloat(document.getElementById('qrSizeInp').value) || 1.0;
-                        const baseQrSize = width * 0.40; // 40% of width
+                        const baseQrSize = CANVAS_W * 0.40; 
                         const qrSize = baseQrSize * qrScale;
                         
-                        // Original centers for 40% width
-                        const originalCenterX = width / 2;
-                        const originalCenterY = (height * 0.25) + (baseQrSize / 2);
+                        const originalCenterX = CANVAS_W / 2;
+                        const originalCenterY = (CANVAS_H * 0.25) + (baseQrSize / 2);
                         
                         const qrX = originalCenterX - (qrSize / 2);
                         const qrY = originalCenterY - (qrSize / 2);
                         
-                        // White backing for transparent QRs
                         ctx.fillStyle = "#ffffff";
-                        // Scale padding alongside the QR Code
                         const padding = 15 * qrScale;
-                        ctx.fillRect(qrX - padding, qrY - padding, qrSize + (padding * 2), qrSize + (padding * 2));
+                        
+                        ctx.beginPath();
+                        ctx.roundRect(qrX - padding, qrY - padding, qrSize + (padding * 2), qrSize + (padding * 2), 15);
+                        ctx.fill();
+                        
                         ctx.drawImage(qrImg, qrX, qrY, qrSize, qrSize);
                     }
                 }
@@ -946,24 +1016,25 @@
 
                 ctx.fillStyle = backColor;
                 ctx.textAlign = 'center';
+                ctx.textBaseline = 'top'; 
 
-                ctx.font = `700 50px "${backFont}", sans-serif`;
-                ctx.fillText(document.getElementById('viewIdNum').innerText, width / 2, height * 0.545);
+                // Updated to use bold and normal string references for safer cross-browser Canvas parsing
+                ctx.font = `bold 50px "${backFont}", sans-serif`;
+                ctx.fillText(document.getElementById('viewIdNum').innerText, CANVAS_W / 2, CANVAS_H * 0.545);
 
-                ctx.font = `400 45px "${backFont}", sans-serif`;
-                ctx.fillText("BLOOD GROUPE", width / 2, height * 0.595);
+                ctx.font = `normal 45px "${backFont}", sans-serif`;
+                ctx.fillText("BLOOD GROUPE", CANVAS_W / 2, CANVAS_H * 0.595);
 
-                ctx.font = `700 75px "${backFont}", sans-serif`;
-                ctx.fillText(document.getElementById('viewBlood').innerText, width / 2, height * 0.635);
+                ctx.font = `bold 75px "${backFont}", sans-serif`;
+                ctx.fillText(document.getElementById('viewBlood').innerText, CANVAS_W / 2, CANVAS_H * 0.635);
 
-                ctx.font = `700 50px "${backFont}", sans-serif`;
-                ctx.fillText(document.getElementById('viewPhone').innerText, width / 2, height * 0.89);
+                ctx.font = `bold 50px "${backFont}", sans-serif`;
+                ctx.fillText(document.getElementById('viewPhone').innerText, CANVAS_W / 2, CANVAS_H * 0.89);
 
-                ctx.font = `700 42px "${backFont}", sans-serif`;
-                ctx.fillText(document.getElementById('viewEmail').innerText, width / 2, height * 0.95);
+                ctx.font = `bold 42px "${backFont}", sans-serif`;
+                ctx.fillText(document.getElementById('viewEmail').innerText, CANVAS_W / 2, CANVAS_H * 0.95);
             }
 
-            // Trigger Download
             const link = document.createElement('a');
             const safeName = document.getElementById('nameInp').value.replace(/[^a-z0-9]/gi, '_').toLowerCase() || 'id_card';
             link.download = `TryMyID_${safeName}_${side.toUpperCase()}.png`;
@@ -971,7 +1042,6 @@
             link.click();
         }
 
-        // Initialize displays
         window.onload = () => {
             syncFront();
             syncBack();
