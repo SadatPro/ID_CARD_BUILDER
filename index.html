@@ -3,21 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TryMyID - Online ID Card Editor</title>
-    <!-- Massive Google Fonts Import for all requested typography -->
-    <link href="https://fonts.googleapis.com/css2?family=Alumni+Sans+Inline+One&family=Archivo+Black&family=Audiowide&family=Bungee+Inline&family=Jersey+20+Charted&family=Jersey+25+Charted&family=Libre+Barcode+39+Text&family=Lilita+One&family=Monoton&family=Paytone+One&family=Rowdies&family=Rubik+Broken+Fax&family=Rubik+Glitch+Pop&family=Rubik+Lines&family=Unbounded:wght@400;700;900&family=Wallpoet&family=Zen+Tokyo+Zoo&family=Orbitron:wght@700;900&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <title>TryMyID - Material Design ID Editor</title>
+    <!-- Massive Google Fonts Import including Roboto for UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Alumni+Sans+Inline+One&family=Archivo+Black&family=Audiowide&family=Bungee+Inline&family=Jersey+20+Charted&family=Jersey+25+Charted&family=Libre+Barcode+39+Text&family=Lilita+One&family=Monoton&family=Paytone+One&family=Rowdies&family=Rubik+Broken+Fax&family=Rubik+Glitch+Pop&family=Rubik+Lines&family=Unbounded:wght@400;700;900&family=Wallpoet&family=Zen+Tokyo+Zoo&family=Orbitron:wght@700;900&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* HIG Color Palette (Dark Mode Default) */
-            --bg-base: #000000;
-            --bg-secondary: #1C1C1E; 
-            --bg-tertiary: #2C2C2E; 
-            --bg-quaternary: #3A3A3C;
-            --label-primary: #FFFFFF;
-            --label-secondary: #EBEBF599; 
-            --separator: #38383A;
-            --tint-blue: #0A84FF;
-            --tint-blue-hover: #007AFF;
+            /* Material Design 3 Dark Theme Palette (Green Primary) */
+            --md-bg: #111411; /* Very dark green-tinted background */
+            --md-surface: #1B211C; /* Surface level 1 */
+            --md-surface-variant: #262E27; /* Surface level 2 */
+            --md-primary: #4ADE80; /* Material Green */
+            --md-primary-hover: #22C55E;
+            --md-on-primary: #022C16;
+            --md-text: #E1E3E1;
+            --md-text-secondary: #A3ADA4;
+            --md-outline: #404943;
+            --md-divider: #2D362F;
             
             /* ID Variables */
             --id-bg: url('https://raw.githubusercontent.com/SadatPro/img/refs/heads/main/NEW_ESRC_ID_CARD2.jpg');
@@ -27,260 +28,296 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            background: var(--bg-base);
-            color: var(--label-primary);
-            font-family: 'Stack Sans Notch', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: var(--md-bg);
+            color: var(--md-text);
+            font-family: 'Roboto', sans-serif;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 0 0 40px 0;
+            padding: 0 0 60px 0;
         }
 
-        /* Glassmorphic Header */
+        /* Material App Bar */
         .header-wrapper {
-            position: sticky;
-            top: 0;
             width: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px 20px 15px 20px;
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            padding: 24px 20px 20px 20px;
+            background: var(--md-surface);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            margin-bottom: 32px;
+            position: sticky;
+            top: 0;
             z-index: 100;
-            border-bottom: 0.5px solid var(--separator);
-            margin-bottom: 30px;
         }
 
         .header-wrapper h1 {
             font-family: 'Orbitron', sans-serif;
-            font-size: 24px;
+            font-size: 26px;
             font-weight: 700;
-            letter-spacing: -0.5px;
-            margin-bottom: 4px;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+            color: var(--md-text);
         }
 
         .header-wrapper span {
-            color: var(--tint-blue);
+            color: var(--md-primary);
         }
 
         .header-wrapper p {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 13px;
-            color: var(--label-secondary);
+            font-size: 14px;
+            color: var(--md-text-secondary);
             font-weight: 400;
         }
 
-        /* HIG Segmented Control for Tabs */
+        /* Material Tabs */
         .tabs-container {
             display: flex;
-            background: var(--bg-secondary);
-            padding: 3px;
-            border-radius: 9px;
-            margin-bottom: 30px;
-            width: fit-content;
+            gap: 8px;
+            margin-bottom: 32px;
+            border-bottom: 1px solid var(--md-divider);
+            width: 100%;
+            max-width: 600px;
+            justify-content: center;
         }
 
         .tab-btn {
             background: transparent;
-            color: var(--label-primary);
+            color: var(--md-text-secondary);
             border: none;
-            padding: 6px 24px;
-            border-radius: 7px;
-            font-family: 'Montserrat', sans-serif;
+            border-bottom: 3px solid transparent;
+            padding: 12px 32px;
+            font-family: 'Roboto', sans-serif;
             font-weight: 500;
-            font-size: 13px;
+            font-size: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
             cursor: pointer;
-            transition: all 0.2s ease;
-            letter-spacing: -0.2px;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn:hover {
+            color: var(--md-text);
+            background: rgba(74, 222, 128, 0.05);
         }
 
         .tab-btn.active {
-            background: #636366; 
-            box-shadow: 0 3px 8px rgba(0,0,0,0.12), 0 3px 1px rgba(0,0,0,0.04);
-            font-weight: 600;
+            color: var(--md-primary);
+            border-bottom: 3px solid var(--md-primary);
         }
 
         .container {
             display: flex;
-            gap: 40px;
+            gap: 48px;
             width: 100%;
-            max-width: 1000px;
+            max-width: 1100px;
             flex-wrap: wrap;
             justify-content: center;
             align-items: flex-start;
             padding: 0 20px;
         }
 
-        /* Settings Panel Structure */
+        /* Settings Panel Structure - Material Cards */
         .controls {
-            width: 400px;
+            width: 420px;
             display: flex;
             flex-direction: column;
             gap: 24px;
         }
 
         .control-section {
-            background: var(--bg-secondary);
-            border-radius: 12px;
+            background: var(--md-surface);
+            border-radius: 16px;
+            padding: 24px;
             display: flex;
             flex-direction: column;
-            overflow: hidden; 
+            gap: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2), 0 1px 2px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.03);
         }
 
         .section-header {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 12px;
-            text-transform: uppercase;
-            color: var(--label-secondary);
-            padding: 0 16px 8px 16px;
-            margin-top: -10px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-        }
-
-        .input-group { 
-            display: flex; 
-            flex-direction: row; 
-            justify-content: space-between;
+            font-size: 18px;
+            color: var(--md-primary);
+            font-weight: 500;
+            margin-bottom: 4px;
+            display: flex;
             align-items: center;
-            padding: 12px 16px;
-            border-bottom: 0.5px solid var(--separator);
-            gap: 15px;
-        }
-        
-        .control-section .input-group:last-child { border-bottom: none; }
-
-        .input-group.column-mode {
-            flex-direction: column;
-            align-items: flex-start;
             gap: 8px;
         }
 
+        .section-header::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 18px;
+            background: var(--md-primary);
+            border-radius: 2px;
+        }
+
+        /* Material Form Inputs */
+        .input-group { 
+            display: flex; 
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .input-group-row {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--md-divider);
+        }
+
+        .input-group-row:last-child {
+            border-bottom: none;
+        }
+
         label { 
-            font-family: 'Montserrat', sans-serif;
             font-size: 13px; 
             font-weight: 500; 
-            color: var(--label-primary); 
-            white-space: nowrap;
+            color: var(--md-text-secondary); 
         }
         
+        /* Material Text Field */
         input[type="text"], select {
             width: 100%;
-            max-width: 200px;
-            padding: 8px 12px;
-            background: var(--bg-tertiary);
-            border: 1px solid transparent;
+            padding: 12px 16px;
+            background: var(--md-surface-variant);
+            border: 1px solid var(--md-outline);
             border-radius: 8px;
-            color: var(--label-primary);
-            font-family: 'Montserrat', sans-serif;
-            font-size: 14px;
+            color: var(--md-text);
+            font-family: 'Roboto', sans-serif;
+            font-size: 15px;
             outline: none;
-            transition: all 0.2s;
-            text-align: right;
+            transition: all 0.2s ease;
         }
 
-        .column-mode input[type="text"], .column-mode select {
-            max-width: 100%;
-            text-align: left;
+        input[type="text"]:focus, select:focus { 
+            border-color: var(--md-primary);
+            background: #2D362F;
+            box-shadow: 0 0 0 2px rgba(74, 222, 128, 0.2);
         }
 
-        input[type="text"]:focus, select:focus { background: var(--bg-quaternary); }
-
+        /* Custom File Input */
         input[type="file"] { display: none; }
         .file-upload-btn {
-            background: var(--bg-tertiary);
-            color: var(--tint-blue);
-            padding: 8px 16px;
+            background: var(--md-surface-variant);
+            color: var(--md-primary);
+            border: 1px dashed var(--md-outline);
+            padding: 14px 16px;
             border-radius: 8px;
-            font-family: 'Montserrat', sans-serif;
             font-size: 14px;
-            font-weight: 600;
+            font-weight: 500;
             cursor: pointer;
             text-align: center;
             width: 100%;
-            transition: background 0.2s;
+            transition: all 0.2s ease;
         }
-        .file-upload-btn:hover { background: var(--bg-quaternary); }
+        .file-upload-btn:hover { 
+            background: rgba(74, 222, 128, 0.08); 
+            border-color: var(--md-primary);
+        }
 
+        /* Color Picker */
         input[type="color"] {
             -webkit-appearance: none;
             border: none;
-            width: 32px;
-            height: 32px;
-            border-radius: 16px;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
             cursor: pointer;
             background: transparent;
             padding: 0;
-            overflow: hidden;
         }
         input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
-        input[type="color"]::-webkit-color-swatch { border: 2px solid var(--separator); border-radius: 16px; }
+        input[type="color"]::-webkit-color-swatch { border: 1px solid var(--md-outline); border-radius: 8px; }
 
+        /* Material Slider */
         input[type="range"] {
             -webkit-appearance: none;
             width: 100%;
             background: transparent;
-            height: 20px;
+            height: 24px;
+            accent-color: var(--md-primary);
         }
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
-            height: 24px;
-            width: 24px;
+            height: 20px;
+            width: 20px;
             border-radius: 50%;
-            background: #ffffff;
+            background: var(--md-primary);
             cursor: pointer;
-            margin-top: -10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            margin-top: -8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            transition: transform 0.1s;
+        }
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
         }
         input[type="range"]::-webkit-slider-runnable-track {
             width: 100%;
             height: 4px;
             cursor: pointer;
-            background: var(--bg-quaternary);
+            background: var(--md-outline);
             border-radius: 2px;
         }
 
         .sliders-row {
             display: flex;
-            gap: 15px;
+            gap: 16px;
             width: 100%;
         }
 
+        /* Material Filled Button */
         .btn {
             width: 100%;
-            padding: 14px;
+            padding: 16px;
             border: none;
-            border-radius: 12px;
+            border-radius: 100px; /* Fully rounded pill shape for M3 */
             font-weight: 600;
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Roboto', sans-serif;
             font-size: 15px;
             cursor: pointer;
             transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
         }
 
         .btn-primary { 
-            background: var(--tint-blue); 
-            color: #ffffff; 
-            margin-top: 10px;
+            background: var(--md-primary); 
+            color: var(--md-on-primary); 
+            margin-top: 12px;
+            box-shadow: 0 4px 8px rgba(74, 222, 128, 0.25);
         }
         .btn-primary:hover { 
-            background: var(--tint-blue-hover); 
-            transform: scale(0.98);
+            background: var(--md-primary-hover); 
+            box-shadow: 0 6px 12px rgba(74, 222, 128, 0.35);
+            transform: translateY(-1px);
+        }
+        .btn-primary:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 4px rgba(74, 222, 128, 0.25);
         }
 
         .tip {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 11px;
-            color: var(--label-secondary);
+            font-size: 12px;
+            color: var(--md-text-secondary);
             margin-top: 4px;
-            line-height: 1.4;
         }
 
+        /* Layout visibility */
         .tab-content { display: none; }
         .controls.tab-content.active { display: flex; flex-direction: column; }
         .preview-container.tab-content.active { display: flex; flex-direction: column; }
@@ -289,6 +326,8 @@
             flex: 1;
             min-width: 380px;
             align-items: center;
+            position: sticky;
+            top: 120px;
         }
 
         .id-card-wrapper {
@@ -298,12 +337,12 @@
             background-color: #fff;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1);
-            border-radius: 12px;
+            box-shadow: 0 24px 48px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05);
+            border-radius: 16px;
             transform: translateZ(0); 
         }
 
-        /* --- MATHEMATICALLY SYNCED FRONT SIDE STYLES --- */
+        /* --- SYNCED FRONT SIDE STYLES --- */
         .id-bg, .id-bg-back {
             position: absolute;
             inset: 0;
@@ -336,46 +375,46 @@
             pointer-events: none;
         }
 
-        .id-role {
-            position: absolute;
-            transform-origin: top left;
-            white-space: nowrap;
-            letter-spacing: 2px;
-            line-height: 1;
-        }
-
-        .id-name {
+        .id-role, .id-name, .id-qr, .id-back-text {
             position: absolute;
             white-space: nowrap;
-            letter-spacing: 1px;
-            line-height: 1;
         }
 
-        /* --- MATHEMATICALLY SYNCED BACK SIDE STYLES --- */
-        .id-qr {
-            position: absolute;
-            box-sizing: content-box;
-            z-index: 5;
-        }
-
-        .id-back-text {
-            position: absolute;
-            white-space: nowrap;
-            z-index: 5;
-            line-height: 1;
-        }
+        .id-role { transform-origin: top left; letter-spacing: 2px; line-height: 1; }
+        .id-name { letter-spacing: 1px; line-height: 1; }
+        .id-qr { box-sizing: content-box; z-index: 5; }
+        .id-back-text { z-index: 5; line-height: 1; }
 
         #render-canvas { display: none; }
 
         .preview-label {
-            font-family: 'Montserrat', sans-serif;
-            margin-top: 16px;
-            font-size: 13px;
-            color: var(--label-secondary);
+            margin-top: 24px;
+            font-size: 14px;
+            color: var(--md-text-secondary);
             font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .preview-label::before {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: var(--md-primary);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--md-primary);
+            animation: pulse 2s infinite;
         }
 
-        @media (max-width: 768px) {
+        @keyframes pulse {
+            0% { opacity: 0.5; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+            100% { opacity: 0.5; transform: scale(0.8); }
+        }
+
+        @media (max-width: 860px) {
+            .preview-container { position: static; }
             .controls { width: 100%; }
         }
     </style>
@@ -384,7 +423,7 @@
 
     <div class="header-wrapper">
         <h1>TryMy<span>ID</span></h1>
-        <p>Advanced ID Card Studio</p>
+        <p>Material Design Studio</p>
     </div>
 
     <div class="tabs-container">
@@ -396,36 +435,36 @@
         <!-- Settings Panel: FRONT -->
         <div class="controls tab-content active" id="controls-front">
 
-            <!-- SECTION 1: ROLE CONTROLS -->
-            <div>
+            <div class="control-section">
                 <div class="section-header">Role Configuration</div>
-                <div class="control-section">
-                    <div class="input-group">
-                        <label>Position</label>
-                        <input type="text" id="posInp" list="roleOptions" value="PRESIDENT" placeholder="Select or type..." oninput="syncFront()">
-                        <datalist id="roleOptions">
-                            <option value="PRESIDENT">
-                            <option value="VICE PRESIDENT - 1">
-                            <option value="VICE PRESIDENT - 2">
-                            <option value="GENERAL SECRETARY (GS)">
-                            <option value="ASSISTANT GENERAL SECRETARY - 1">
-                            <option value="ASSISTANT GENERAL SECRETARY - 2">
-                            <option value="TREASURER">
-                            <option value="ASSISTANT TREASURER">
-                            <option value="WOMEN'S SECRETARY">
-                            <option value="JOINT WOMEN'S SECRETARY">
-                            <option value="MEDIA SECRETARY">
-                            <option value="ASSISTANT MEDIA SECRETARY">
-                            <option value="OFFICE SECRETARY">
-                            <option value="ASSISTANT OFFICE SECRETARY">
-                            <option value="ORGANIZING SECRETARY">
-                            <option value="ASSISTANT ORGANIZING SECRETARY">
-                            <option value="PRESS SECRETARY">
-                            <option value="ASSISTANT PRESS SECRETARY">
-                            <option value="EXECUTIVE MEMBER">
-                        </datalist>
-                    </div>
-                    <div class="input-group">
+                <div class="input-group">
+                    <label>Position</label>
+                    <input type="text" id="posInp" list="roleOptions" value="PRESIDENT" placeholder="Select or type..." oninput="syncFront()">
+                    <datalist id="roleOptions">
+                        <option value="PRESIDENT">
+                        <option value="VICE PRESIDENT - 1">
+                        <option value="VICE PRESIDENT - 2">
+                        <option value="GENERAL SECRETARY (GS)">
+                        <option value="ASSISTANT GENERAL SECRETARY - 1">
+                        <option value="ASSISTANT GENERAL SECRETARY - 2">
+                        <option value="TREASURER">
+                        <option value="ASSISTANT TREASURER">
+                        <option value="WOMEN'S SECRETARY">
+                        <option value="JOINT WOMEN'S SECRETARY">
+                        <option value="MEDIA SECRETARY">
+                        <option value="ASSISTANT MEDIA SECRETARY">
+                        <option value="OFFICE SECRETARY">
+                        <option value="ASSISTANT OFFICE SECRETARY">
+                        <option value="ORGANIZING SECRETARY">
+                        <option value="ASSISTANT ORGANIZING SECRETARY">
+                        <option value="PRESS SECRETARY">
+                        <option value="ASSISTANT PRESS SECRETARY">
+                        <option value="EXECUTIVE MEMBER">
+                    </datalist>
+                </div>
+                
+                <div class="sliders-row">
+                    <div class="input-group" style="flex: 2;">
                         <label>Typography</label>
                         <select id="roleFontInp" onchange="syncFront()">
                             <option value="Archivo Black">Archivo Black</option>
@@ -444,34 +483,31 @@
                             <option value="Zen Tokyo Zoo">Zen Tokyo Zoo</option>
                         </select>
                     </div>
-                    <div class="input-group">
-                        <label>Text Color</label>
+                    <div class="input-group" style="flex: 1;">
+                        <label>Color</label>
                         <input type="color" id="roleColorInp" value="#00b300" oninput="syncFront()">
                     </div>
-                    <div class="input-group column-mode">
-                        <div class="sliders-row">
-                            <div style="flex:1"><label style="font-size:11px;color:var(--label-secondary)">Scale</label></div>
-                            <div style="flex:1"><label style="font-size:11px;color:var(--label-secondary)">X Axis</label></div>
-                            <div style="flex:1"><label style="font-size:11px;color:var(--label-secondary)">Y Axis</label></div>
-                        </div>
-                        <div class="sliders-row">
-                            <input type="range" id="roleSizeInp" min="0.3" max="2.5" step="0.02" value="1.0" oninput="syncFront()">
-                            <input type="range" id="roleOffsetXInp" min="-500" max="500" step="1" value="0" oninput="syncFront()">
-                            <input type="range" id="roleOffsetYInp" min="-500" max="500" step="1" value="0" oninput="syncFront()">
-                        </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Scale & Position</label>
+                    <div class="sliders-row" style="margin-top: 8px;">
+                        <input type="range" id="roleSizeInp" min="0.3" max="2.5" step="0.02" value="1.0" title="Scale" oninput="syncFront()">
+                        <input type="range" id="roleOffsetXInp" min="-500" max="500" step="1" value="0" title="X Axis" oninput="syncFront()">
+                        <input type="range" id="roleOffsetYInp" min="-500" max="500" step="1" value="0" title="Y Axis" oninput="syncFront()">
                     </div>
                 </div>
             </div>
             
-            <!-- SECTION 2: NAME CONTROLS -->
-            <div>
+            <div class="control-section">
                 <div class="section-header">Identity</div>
-                <div class="control-section">
-                    <div class="input-group">
-                        <label>Name</label>
-                        <input type="text" id="nameInp" value="SADAT MAHMUD" placeholder="Full Name" oninput="syncFront()">
-                    </div>
-                    <div class="input-group">
+                <div class="input-group">
+                    <label>Full Name</label>
+                    <input type="text" id="nameInp" value="SADAT MAHMUD" placeholder="Enter name" oninput="syncFront()">
+                </div>
+                
+                <div class="sliders-row">
+                    <div class="input-group" style="flex: 2;">
                         <label>Typography</label>
                         <select id="nameFontInp" onchange="syncFront()">
                             <option value="Archivo Black">Archivo Black</option>
@@ -490,82 +526,72 @@
                             <option value="Zen Tokyo Zoo">Zen Tokyo Zoo</option>
                         </select>
                     </div>
-                    <div class="input-group">
-                        <label>Text Color</label>
+                    <div class="input-group" style="flex: 1;">
+                        <label>Color</label>
                         <input type="color" id="nameColorInp" value="#0a1172" oninput="syncFront()">
                     </div>
-                    <div class="input-group column-mode">
-                        <div class="sliders-row">
-                            <div style="flex:1"><label style="font-size:11px;color:var(--label-secondary)">Scale</label></div>
-                            <div style="flex:1"><label style="font-size:11px;color:var(--label-secondary)">X Axis</label></div>
-                            <div style="flex:1"><label style="font-size:11px;color:var(--label-secondary)">Y Axis</label></div>
-                        </div>
-                        <div class="sliders-row">
-                            <input type="range" id="nameSizeInp" min="0.3" max="2.5" step="0.02" value="1.0" oninput="syncFront()">
-                            <input type="range" id="nameOffsetXInp" min="-500" max="500" step="1" value="0" oninput="syncFront()">
-                            <input type="range" id="nameOffsetYInp" min="-500" max="500" step="1" value="0" oninput="syncFront()">
-                        </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Scale & Position</label>
+                    <div class="sliders-row" style="margin-top: 8px;">
+                        <input type="range" id="nameSizeInp" min="0.3" max="2.5" step="0.02" value="1.0" title="Scale" oninput="syncFront()">
+                        <input type="range" id="nameOffsetXInp" min="-500" max="500" step="1" value="0" title="X Axis" oninput="syncFront()">
+                        <input type="range" id="nameOffsetYInp" min="-500" max="500" step="1" value="0" title="Y Axis" oninput="syncFront()">
                     </div>
                 </div>
             </div>
 
-            <!-- SECTION 3: PHOTO CONTROLS -->
-            <div>
+            <div class="control-section">
                 <div class="section-header">Portrait</div>
-                <div class="control-section">
-                    <div class="input-group column-mode">
-                        <label for="fileInp" class="file-upload-btn">Choose Image...</label>
-                        <input type="file" id="fileInp" accept="image/*" onchange="handleImg(event)">
-                    </div>
-                    <div class="input-group column-mode">
-                        <div class="sliders-row">
-                            <div style="flex:1"><label style="font-size:11px;color:var(--label-secondary)">Zoom</label></div>
-                            <div style="flex:1"><label style="font-size:11px;color:var(--label-secondary)">X Axis</label></div>
-                            <div style="flex:1"><label style="font-size:11px;color:var(--label-secondary)">Y Axis</label></div>
-                        </div>
-                        <div class="sliders-row">
-                            <input type="range" id="scaleInp" min="0.5" max="3.0" step="0.05" value="1.0" oninput="syncFront()">
-                            <input type="range" id="offsetXInp" min="-100" max="100" step="1" value="0" oninput="syncFront()">
-                            <input type="range" id="offsetYInp" min="-100" max="100" step="1" value="0" oninput="syncFront()">
-                        </div>
+                <div class="input-group">
+                    <label for="fileInp" class="file-upload-btn">Upload Photo...</label>
+                    <input type="file" id="fileInp" accept="image/*" onchange="handleImg(event)">
+                </div>
+                <div class="input-group">
+                    <label>Adjust Photo (Zoom / X / Y)</label>
+                    <div class="sliders-row" style="margin-top: 8px;">
+                        <input type="range" id="scaleInp" min="0.5" max="3.0" step="0.05" value="1.0" oninput="syncFront()">
+                        <input type="range" id="offsetXInp" min="-100" max="100" step="1" value="0" oninput="syncFront()">
+                        <input type="range" id="offsetYInp" min="-100" max="100" step="1" value="0" oninput="syncFront()">
                     </div>
                 </div>
             </div>
 
-            <button class="btn btn-primary" onclick="downloadIDCard('front')">Export Front Card</button>
+            <button class="btn btn-primary" onclick="downloadIDCard('front')">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                Export Front Card
+            </button>
         </div>
 
         <!-- Settings Panel: BACK -->
         <div class="controls tab-content" id="controls-back">
-            <div>
+            <div class="control-section">
                 <div class="section-header">Card Information</div>
-                <div class="control-section">
-                    <div class="input-group">
-                        <label>ID Number</label>
-                        <input type="text" id="idNumInp" value="1234567890" placeholder="1234567890" oninput="syncBack()">
-                    </div>
-                    <div class="input-group">
-                        <label>Blood Group</label>
-                        <input type="text" id="bloodInp" value="A+" placeholder="A+" oninput="syncBack()">
-                    </div>
-                    <div class="input-group">
-                        <label>Phone</label>
-                        <input type="text" id="phoneInp" value="+8801234567890" placeholder="+8801234567890" oninput="syncBack()">
-                    </div>
-                    <div class="input-group">
-                        <label>Email</label>
-                        <input type="text" id="emailInp" value="STUDENT@EXAMPLE.COM" placeholder="Email" oninput="syncBack()">
-                    </div>
+                <div class="input-group">
+                    <label>ID Number</label>
+                    <input type="text" id="idNumInp" value="1234567890" placeholder="1234567890" oninput="syncBack()">
+                </div>
+                <div class="input-group">
+                    <label>Blood Group</label>
+                    <input type="text" id="bloodInp" value="A+" placeholder="A+" oninput="syncBack()">
+                </div>
+                <div class="input-group">
+                    <label>Phone</label>
+                    <input type="text" id="phoneInp" value="+8801234567890" placeholder="+8801234567890" oninput="syncBack()">
+                </div>
+                <div class="input-group">
+                    <label>Email</label>
+                    <input type="text" id="emailInp" value="STUDENT@EXAMPLE.COM" placeholder="Email" oninput="syncBack()">
                 </div>
             </div>
 
-            <div>
+            <div class="control-section">
                 <div class="section-header">Appearance</div>
-                <div class="control-section">
-                    <div class="input-group">
+                <div class="sliders-row">
+                    <div class="input-group" style="flex: 2;">
                         <label>Typography</label>
                         <select id="backFontInp" onchange="syncBack()">
-                            <!-- Updated Back Side Fonts with all requested typography -->
                             <option value="Montserrat">Montserrat</option>
                             <option value="Stack Sans Notch">Stack Sans Notch</option>
                             <option value="Archivo Black">Archivo Black</option>
@@ -583,32 +609,35 @@
                             <option value="Zen Tokyo Zoo">Zen Tokyo Zoo</option>
                         </select>
                     </div>
-                    <div class="input-group">
+                    <div class="input-group" style="flex: 1;">
                         <label>Text Color</label>
                         <input type="color" id="backColorInp" value="#000000" oninput="syncBack()">
                     </div>
                 </div>
             </div>
 
-            <div>
+            <div class="control-section">
                 <div class="section-header">QR Generation</div>
-                <div class="control-section">
-                    <div class="input-group column-mode">
-                        <label>Link or Text Data</label>
-                        <input type="text" id="qrInp" value="https://daffodilvarsity.edu.bd/" style="max-width:100%" placeholder="URL or Data" oninput="updateQR()">
-                    </div>
-                    <div class="input-group">
-                        <label>QR Color</label>
-                        <input type="color" id="qrColorInp" value="#000000" oninput="updateQR()">
-                    </div>
-                    <div class="input-group">
+                <div class="input-group">
+                    <label>Link or Text Data</label>
+                    <input type="text" id="qrInp" value="https://daffodilvarsity.edu.bd/" placeholder="URL or Data" oninput="updateQR()">
+                </div>
+                <div class="sliders-row">
+                    <div class="input-group" style="flex: 1;">
                         <label>QR Scale</label>
                         <input type="range" id="qrSizeInp" min="0.5" max="2.0" step="0.05" value="1.0" oninput="updateQRZoom()">
+                    </div>
+                    <div class="input-group" style="flex: 1;">
+                        <label>QR Color</label>
+                        <input type="color" id="qrColorInp" value="#000000" oninput="updateQR()">
                     </div>
                 </div>
             </div>
 
-            <button class="btn btn-primary" onclick="downloadIDCard('back')">Export Back Card</button>
+            <button class="btn btn-primary" onclick="downloadIDCard('back')">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                Export Back Card
+            </button>
         </div>
 
         <!-- Live Preview: FRONT -->
@@ -631,7 +660,6 @@
             <div class="id-card-wrapper" id="capture-area-back">
                 <div class="id-bg-back"></div>
                 <div class="id-qr-area">
-                    <!-- Base size loaded initially -->
                     <img id="viewQR" src="https://quickchart.io/qr?size=400&text=https%3A%2F%2Fdaffodilvarsity.edu.bd%2F&dark=000000" class="id-qr" crossorigin="anonymous" alt="QR Code">
                 </div>
                 <div class="id-back-text" id="viewIdNum">ID 1234567890</div>
@@ -652,20 +680,16 @@
         let userImg = null;
         let qrTimeout = null;
         
-        // Base Canvas Dimensions 
         const CANVAS_W = 1200;
         const CANVAS_H = 1920;
         
-        // Animation Frame References for buttery-smooth sliders
         let frontRAF = null;
         let backRAF = null;
         let qrZoomRAF = null;
         
-        // Cached layout math to prevent DOM reflow thrashing during sliding
         let scaleRatioFront = 0;
         let scaleRatioBack = 0;
 
-        // Image URLs
         const bgImgUrlFront = 'https://raw.githubusercontent.com/SadatPro/img/refs/heads/main/NEW_ESRC_ID_CARD2.jpg';
         const bgImgUrlBack = 'https://raw.githubusercontent.com/SadatPro/img/refs/heads/main/NEW_ESRC_BLANC_BACK_ID_CARD.jpg';
 
@@ -698,7 +722,6 @@
             document.getElementById('controls-' + side).classList.add('active');
             document.getElementById('preview-' + side).classList.add('active');
             
-            // Allow CSS to render the block before calculating offsetWidth
             setTimeout(() => {
                 updateScaleRatios();
                 if (side === 'front') _syncFront();
@@ -723,8 +746,6 @@
             reader.readAsDataURL(file);
         }
 
-        // --- MATH SYNCHRONIZATION CORE ---
-        // Using requestAnimationFrame wrappers to make sliders 60fps smooth
         function syncFront() {
             if (frontRAF) cancelAnimationFrame(frontRAF);
             frontRAF = requestAnimationFrame(_syncFront);
@@ -745,7 +766,6 @@
             const scaleRatio = scaleRatioFront;
             if (!scaleRatio) return;
 
-            // Variables
             const nameText = document.getElementById('nameInp').value || "";
             const posText = document.getElementById('posInp').value || "";
             
@@ -755,7 +775,6 @@
             nameEl.innerText = nameText.toUpperCase();
             posEl.innerText = posText.toUpperCase();
 
-            // Colors & Fonts
             const nameColor = document.getElementById('nameColorInp').value;
             const roleColor = document.getElementById('roleColorInp').value;
             nameEl.style.color = nameColor;
@@ -769,7 +788,6 @@
             nameEl.style.fontWeight = 'normal';
             posEl.style.fontWeight = 'normal';
 
-            // Text Scaling Math
             const nameScale = parseFloat(document.getElementById('nameSizeInp').value) || 1.0;
             const roleScale = parseFloat(document.getElementById('roleSizeInp').value) || 1.0;
             
@@ -779,23 +797,19 @@
             nameEl.style.fontSize = `${canvasNameSize * scaleRatio}px`;
             posEl.style.fontSize = `${canvasRoleSize * scaleRatio}px`;
 
-            // Text Offset Math
             const nameOffsetX = parseFloat(document.getElementById('nameOffsetXInp').value) || 0;
             const nameOffsetY = parseFloat(document.getElementById('nameOffsetYInp').value) || 0;
             const roleOffsetX = parseFloat(document.getElementById('roleOffsetXInp').value) || 0;
             const roleOffsetY = parseFloat(document.getElementById('roleOffsetYInp').value) || 0;
 
-            // Positioning Name
             nameEl.style.left = `${(CANVAS_W * 0.61 + nameOffsetX) * scaleRatio}px`;
             nameEl.style.top = `${(CANVAS_H * 0.96 + nameOffsetY) * scaleRatio}px`;
             nameEl.style.transform = `translate(-50%, 0)`;
 
-            // Positioning Role
             posEl.style.left = `${(CANVAS_W * 0.929 + roleOffsetX) * scaleRatio}px`;
             posEl.style.top = `${(CANVAS_H * 0.25 + roleOffsetY) * scaleRatio}px`;
             posEl.style.transform = `rotate(90deg)`;
 
-            // Photo Mapping Math
             const photoEl = document.getElementById('viewPhoto');
             if(userImg && photoEl && photoEl.src) {
                 const scale = parseFloat(document.getElementById('scaleInp').value) || 1.0;
@@ -838,11 +852,10 @@
             const backFont = document.getElementById('backFontInp').value;
             const backColor = document.getElementById('backColorInp').value;
             
-            // Adjusted Alignments specifically for the Blood Grouping typography fixes
             const textsToMap = [
                 { id: 'viewIdNum',   yPct: 0.540, size: 50, weight: "bold" },
-                { id: 'viewBloodLbl',yPct: 0.585, size: 40, weight: "normal" }, // Adjusted spacing
-                { id: 'viewBlood',   yPct: 0.615, size: 75, weight: "bold" },   // Adjusted grouping layout
+                { id: 'viewBloodLbl',yPct: 0.585, size: 40, weight: "normal" },
+                { id: 'viewBlood',   yPct: 0.615, size: 75, weight: "bold" },
                 { id: 'viewPhone',   yPct: 0.890, size: 50, weight: "bold" },
                 { id: 'viewEmail',   yPct: 0.940, size: 42, weight: "bold" }
             ];
@@ -900,14 +913,12 @@
             }, 500);
         }
 
-        // Keep mappings responsive and fast
         window.addEventListener('resize', () => {
             updateScaleRatios();
             syncFront();
             syncBack();
         });
 
-        // High-Res Render & Download
         async function downloadIDCard(side) {
             try {
                 const rFont = document.getElementById('roleFontInp').value;
@@ -971,7 +982,6 @@
                     ctx.restore(); 
                 }
 
-                // 3. Draw Vertical Position (Top to Bottom)
                 const pos = document.getElementById('posInp').value.toUpperCase();
                 if (pos) {
                     const roleFont = document.getElementById('roleFontInp').value;
@@ -995,7 +1005,6 @@
                     ctx.restore();
                 }
 
-                // 4. Draw Horizontal Name Text
                 const name = document.getElementById('nameInp').value.toUpperCase();
                 if (name) {
                     const nameFont = document.getElementById('nameFontInp').value;
@@ -1025,7 +1034,6 @@
                     ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
                 }
 
-                // 2. Draw QR Code
                 const qrImgEl = document.getElementById('viewQR');
                 if (qrImgEl && qrImgEl.src) {
                     const qrImg = await loadImage(qrImgEl.src).catch(() => null);
@@ -1051,7 +1059,6 @@
                     }
                 }
 
-                // 3. Draw Back Text
                 const backFont = document.getElementById('backFontInp').value;
                 const backColor = document.getElementById('backColorInp').value;
 
@@ -1059,7 +1066,6 @@
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'top'; 
 
-                // Updated to use the synchronized alignment offsets
                 ctx.font = `bold 50px "${backFont}", sans-serif`;
                 ctx.fillText(document.getElementById('viewIdNum').innerText, CANVAS_W / 2, CANVAS_H * 0.540);
 
