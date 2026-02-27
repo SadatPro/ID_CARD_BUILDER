@@ -148,6 +148,16 @@
 
         input[type="text"]:focus, select:focus { border-color: var(--accent-green); }
 
+        input[type="color"] {
+            width: 100%;
+            padding: 0;
+            background: #010409;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            height: 38px;
+            cursor: pointer;
+        }
+
         input[type="file"] {
             background: #010409;
             padding: 8px;
@@ -239,7 +249,7 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 65.5%; 
+            height: 65.0%; /* User requested 65.0% */
             z-index: 2;
             display: flex;
             justify-content: center;
@@ -274,7 +284,7 @@
             text-transform: uppercase;
             letter-spacing: 2px;
             line-height: 1;
-            transition: transform 0.1s ease-out;
+            transition: transform 0.1s ease-out, color 0.1s;
         }
 
         .id-name {
@@ -288,7 +298,7 @@
             color: var(--primary-blue);
             text-transform: uppercase;
             letter-spacing: 1px;
-            transition: transform 0.1s ease-out;
+            transition: transform 0.1s ease-out, color 0.1s;
         }
 
         /* --- BACK SIDE STYLES --- */
@@ -319,6 +329,7 @@
             border-radius: 8px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             object-fit: contain;
+            transition: transform 0.15s ease-out;
         }
 
         .id-back-text {
@@ -329,6 +340,7 @@
             font-family: 'Montserrat', sans-serif;
             color: #000000;
             z-index: 5;
+            transition: color 0.1s;
         }
 
         .b-id-num { top: 53.5%; font-size: 1.05rem; font-weight: 700; }
@@ -361,21 +373,43 @@
     <div class="container">
         <!-- Settings Panel: FRONT -->
         <div class="controls tab-content active" id="controls-front">
-            
-            <!-- SECTION 1: NAME CONTROLS -->
+
+            <!-- SECTION 1: ROLE CONTROLS (Moved to Top) -->
             <div class="control-section">
-                <div class="section-title">Name Settings</div>
+                <div class="section-title">Role Settings</div>
                 <div class="input-group">
-                    <label>Candidate Name</label>
-                    <input type="text" id="nameInp" value="JOHN DOE" placeholder="Enter Full Name" oninput="syncFront()">
+                    <label>Position / Role</label>
+                    <!-- Editable field with datalist options -->
+                    <input type="text" id="posInp" list="roleOptions" value="PRESIDENT" placeholder="Select or type custom role" oninput="syncFront()">
+                    <datalist id="roleOptions">
+                        <!-- Phase 1: Core Executive -->
+                        <option value="PRESIDENT">
+                        <option value="VICE PRESIDENT - 1">
+                        <option value="VICE PRESIDENT - 2">
+                        <option value="GENERAL SECRETARY (GS)">
+                        <option value="ASSISTANT GENERAL SECRETARY - 1">
+                        <option value="ASSISTANT GENERAL SECRETARY - 2">
+                        <!-- Phase 2: Executive Committee -->
+                        <option value="TREASURER">
+                        <option value="ASSISTANT TREASURER">
+                        <option value="WOMEN'S SECRETARY">
+                        <option value="JOINT WOMEN'S SECRETARY">
+                        <option value="MEDIA SECRETARY">
+                        <option value="ASSISTANT MEDIA SECRETARY">
+                        <option value="OFFICE SECRETARY">
+                        <option value="ASSISTANT OFFICE SECRETARY">
+                        <option value="ORGANIZING SECRETARY">
+                        <option value="ASSISTANT ORGANIZING SECRETARY">
+                        <option value="PRESS SECRETARY">
+                        <option value="ASSISTANT PRESS SECRETARY">
+                        <option value="EXECUTIVE MEMBER">
+                    </datalist>
                 </div>
                 <div class="input-group">
-                    <label>Name Font</label>
-                    <select id="nameFontInp" onchange="syncFront()">
-                        <!-- Core / Selected standard -->
+                    <label>Role Font</label>
+                    <select id="roleFontInp" onchange="syncFront()">
                         <option value="Archivo Black">Archivo Black</option>
                         <option value="Stack Sans Notch">Stack Sans Notch</option>
-                        <!-- Requested List -->
                         <option value="Unbounded">Unbounded</option>
                         <option value="Monoton">Monoton</option>
                         <option value="Audiowide">Audiowide</option>
@@ -399,63 +433,13 @@
                 </div>
                 <div class="sliders-row">
                     <div class="input-group" style="flex: 1;">
-                        <label>Name X (Left/Right)</label>
-                        <input type="range" id="nameOffsetXInp" min="-500" max="500" step="1" value="0" oninput="syncFront()">
+                        <label>Role Zoom</label>
+                        <input type="range" id="roleSizeInp" min="0.5" max="2.5" step="0.05" value="1.0" oninput="syncFront()">
                     </div>
                     <div class="input-group" style="flex: 1;">
-                        <label>Name Y (Up/Down)</label>
-                        <input type="range" id="nameOffsetYInp" min="-500" max="500" step="1" value="0" oninput="syncFront()">
+                        <label>Role Color</label>
+                        <input type="color" id="roleColorInp" value="#00b300" oninput="syncFront()">
                     </div>
-                </div>
-            </div>
-
-            <!-- SECTION 2: ROLE CONTROLS -->
-            <div class="control-section">
-                <div class="section-title">Role Settings</div>
-                <div class="input-group">
-                    <label>Position / Role</label>
-                    <select id="posInp" onchange="syncFront()">
-                        <optgroup label="Leadership">
-                            <option value="PRESIDENT">President</option>
-                            <option value="VICE PRESIDENT">Vice President</option>
-                            <option value="GENERAL SECRETARY">General Secretary</option>
-                        </optgroup>
-                        <optgroup label="Executive Council">
-                            <option value="TREASURER">Treasurer</option>
-                            <option value="ORGANIZING SECRETARY">Organizing Secretary</option>
-                            <option value="PRESS SECRETARY">Press Secretary</option>
-                            <option value="MEDIA SECRETARY">Media Secretary</option>
-                            <option value="OFFICE SECRETARY">Office Secretary</option>
-                        </optgroup>
-                    </select>
-                </div>
-                <div class="input-group">
-                    <label>Role Font</label>
-                    <select id="roleFontInp" onchange="syncFront()">
-                        <!-- Core / Selected standard -->
-                        <option value="Archivo Black">Archivo Black</option>
-                        <option value="Stack Sans Notch">Stack Sans Notch</option>
-                        <!-- Requested List -->
-                        <option value="Unbounded">Unbounded</option>
-                        <option value="Monoton">Monoton</option>
-                        <option value="Audiowide">Audiowide</option>
-                        <option value="Paytone One">Paytone One</option>
-                        <option value="Rowdies">Rowdies</option>
-                        <option value="Lilita One">Lilita One</option>
-                        <option value="Arial Black">Black 900 (Arial Black)</option>
-                        <option value="Libre Barcode 39 Text">Libre Barcode 39 Text</option>
-                        <option value="Wallpoet">Wallpoet</option>
-                        <option value="Bungee Inline">Bungee Inline</option>
-                        <option value="Boldonse">Boldonse</option>
-                        <option value="BBH Bartle">BBH Bartle</option>
-                        <option value="Jersey 20 Charted">Jersey 20 Charted</option>
-                        <option value="Jersey 25 Charted">Jersey 25 Charted</option>
-                        <option value="Rubik Broken Fax">Rubik Broken Fax</option>
-                        <option value="Rubik Glitch Pop">Rubik Glitch Pop</option>
-                        <option value="Rubik Lines">Rubik Lines</option>
-                        <option value="Alumni Sans Inline One">Alumni Sans Inline One</option>
-                        <option value="Zen Tokyo Zoo">Zen Tokyo Zoo</option>
-                    </select>
                 </div>
                 <div class="sliders-row">
                     <div class="input-group" style="flex: 1;">
@@ -465,6 +449,61 @@
                     <div class="input-group" style="flex: 1;">
                         <label>Role Y (Up/Down)</label>
                         <input type="range" id="roleOffsetYInp" min="-500" max="500" step="1" value="0" oninput="syncFront()">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- SECTION 2: NAME CONTROLS (Moved to Bottom) -->
+            <div class="control-section">
+                <div class="section-title">Name Settings</div>
+                <div class="input-group">
+                    <label>Candidate Name</label>
+                    <input type="text" id="nameInp" value="JOHN DOE" placeholder="Enter Full Name" oninput="syncFront()">
+                </div>
+                <div class="input-group">
+                    <label>Name Font</label>
+                    <select id="nameFontInp" onchange="syncFront()">
+                        <option value="Archivo Black">Archivo Black</option>
+                        <option value="Stack Sans Notch">Stack Sans Notch</option>
+                        <option value="Unbounded">Unbounded</option>
+                        <option value="Monoton">Monoton</option>
+                        <option value="Audiowide">Audiowide</option>
+                        <option value="Paytone One">Paytone One</option>
+                        <option value="Rowdies">Rowdies</option>
+                        <option value="Lilita One">Lilita One</option>
+                        <option value="Arial Black">Black 900 (Arial Black)</option>
+                        <option value="Libre Barcode 39 Text">Libre Barcode 39 Text</option>
+                        <option value="Wallpoet">Wallpoet</option>
+                        <option value="Bungee Inline">Bungee Inline</option>
+                        <option value="Boldonse">Boldonse</option>
+                        <option value="BBH Bartle">BBH Bartle</option>
+                        <option value="Jersey 20 Charted">Jersey 20 Charted</option>
+                        <option value="Jersey 25 Charted">Jersey 25 Charted</option>
+                        <option value="Rubik Broken Fax">Rubik Broken Fax</option>
+                        <option value="Rubik Glitch Pop">Rubik Glitch Pop</option>
+                        <option value="Rubik Lines">Rubik Lines</option>
+                        <option value="Alumni Sans Inline One">Alumni Sans Inline One</option>
+                        <option value="Zen Tokyo Zoo">Zen Tokyo Zoo</option>
+                    </select>
+                </div>
+                <div class="sliders-row">
+                    <div class="input-group" style="flex: 1;">
+                        <label>Name Zoom</label>
+                        <input type="range" id="nameSizeInp" min="0.5" max="2.5" step="0.05" value="1.0" oninput="syncFront()">
+                    </div>
+                    <div class="input-group" style="flex: 1;">
+                        <label>Name Color</label>
+                        <input type="color" id="nameColorInp" value="#0a1172" oninput="syncFront()">
+                    </div>
+                </div>
+                <div class="sliders-row">
+                    <div class="input-group" style="flex: 1;">
+                        <label>Name X (Left/Right)</label>
+                        <input type="range" id="nameOffsetXInp" min="-500" max="500" step="1" value="0" oninput="syncFront()">
+                    </div>
+                    <div class="input-group" style="flex: 1;">
+                        <label>Name Y (Up/Down)</label>
+                        <input type="range" id="nameOffsetYInp" min="-500" max="500" step="1" value="0" oninput="syncFront()">
                     </div>
                 </div>
             </div>
@@ -520,6 +559,41 @@
             </div>
 
             <div class="control-section">
+                <div class="section-title">Back Side Styling</div>
+                <div class="input-group">
+                    <label>Text Font</label>
+                    <select id="backFontInp" onchange="syncBack()">
+                        <option value="Montserrat">Montserrat</option>
+                        <option value="Stack Sans Notch">Stack Sans Notch</option>
+                        <option value="Archivo Black">Archivo Black</option>
+                        <option value="Unbounded">Unbounded</option>
+                        <option value="Monoton">Monoton</option>
+                        <option value="Audiowide">Audiowide</option>
+                        <option value="Paytone One">Paytone One</option>
+                        <option value="Rowdies">Rowdies</option>
+                        <option value="Lilita One">Lilita One</option>
+                        <option value="Arial Black">Black 900 (Arial Black)</option>
+                        <option value="Libre Barcode 39 Text">Libre Barcode 39 Text</option>
+                        <option value="Wallpoet">Wallpoet</option>
+                        <option value="Bungee Inline">Bungee Inline</option>
+                        <option value="Boldonse">Boldonse</option>
+                        <option value="BBH Bartle">BBH Bartle</option>
+                        <option value="Jersey 20 Charted">Jersey 20 Charted</option>
+                        <option value="Jersey 25 Charted">Jersey 25 Charted</option>
+                        <option value="Rubik Broken Fax">Rubik Broken Fax</option>
+                        <option value="Rubik Glitch Pop">Rubik Glitch Pop</option>
+                        <option value="Rubik Lines">Rubik Lines</option>
+                        <option value="Alumni Sans Inline One">Alumni Sans Inline One</option>
+                        <option value="Zen Tokyo Zoo">Zen Tokyo Zoo</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Text Color</label>
+                    <input type="color" id="backColorInp" value="#000000" oninput="syncBack()">
+                </div>
+            </div>
+
+            <div class="control-section">
                 <div class="section-title">QR Code System</div>
                 <div class="input-group">
                     <label>Custom QR Code (Link or Text)</label>
@@ -528,6 +602,16 @@
                         <button type="button" onclick="updateQR()" style="padding: 0 15px; border-radius: 6px; background: #30363d; color: white; border: none; cursor: pointer; font-family: 'Orbitron', sans-serif; font-size: 11px; transition: 0.2s;">GENERATE</button>
                     </div>
                     <p class="tip">Enter a website link or text, then generate your custom QR.</p>
+                </div>
+                <div class="sliders-row" style="margin-top: 5px;">
+                    <div class="input-group" style="flex: 1;">
+                        <label>QR Size (Zoom)</label>
+                        <input type="range" id="qrSizeInp" min="0.5" max="2.0" step="0.05" value="1.0" oninput="updateQRZoom()">
+                    </div>
+                    <div class="input-group" style="flex: 1;">
+                        <label>QR Color</label>
+                        <input type="color" id="qrColorInp" value="#000000" oninput="updateQR()">
+                    </div>
                 </div>
             </div>
 
@@ -562,7 +646,7 @@
                 
                 <!-- Layer 2: QR Code -->
                 <div class="id-qr-area">
-                    <img id="viewQR" src="https://quickchart.io/qr?size=400&text=https%3A%2F%2Fexample.com%2F" class="id-qr" crossorigin="anonymous" alt="QR Code">
+                    <img id="viewQR" src="https://quickchart.io/qr?size=400&text=https%3A%2F%2Fexample.com%2F&dark=000000" class="id-qr" crossorigin="anonymous" alt="QR Code">
                 </div>
 
                 <!-- Layer 3: Text Data -->
@@ -630,7 +714,7 @@
             reader.readAsDataURL(file);
         }
 
-        // Sync Front Panel Settings (Text, Fonts, Offsets)
+        // Sync Front Panel Settings (Text, Fonts, Offsets, Colors, Sizes)
         function syncFront() {
             // Text Content
             const name = document.getElementById('nameInp').value || "";
@@ -641,11 +725,23 @@
             nameEl.innerText = name.toUpperCase();
             posEl.innerText = pos.toUpperCase();
 
+            // Colors
+            const nameColor = document.getElementById('nameColorInp').value;
+            const roleColor = document.getElementById('roleColorInp').value;
+            nameEl.style.color = nameColor;
+            posEl.style.color = roleColor;
+
             // Font Families
             const nameFont = document.getElementById('nameFontInp').value;
             const roleFont = document.getElementById('roleFontInp').value;
             nameEl.style.fontFamily = `"${nameFont}", sans-serif`;
             posEl.style.fontFamily = `"${roleFont}", sans-serif`;
+
+            // Zoom / Scaling (Base Sizes: Name = 1.3rem, Role = 2.2rem)
+            const nameScale = parseFloat(document.getElementById('nameSizeInp').value) || 1.0;
+            const roleScale = parseFloat(document.getElementById('roleSizeInp').value) || 1.0;
+            nameEl.style.fontSize = `${1.3 * nameScale}rem`;
+            posEl.style.fontSize = `${2.2 * roleScale}rem`;
 
             // Text Offsets (Scaled for live preview)
             const nameOffsetX = document.getElementById('nameOffsetXInp').value / UI_TO_CANVAS_RATIO;
@@ -673,14 +769,37 @@
             document.getElementById('viewBlood').innerText = document.getElementById('bloodInp').value.toUpperCase();
             document.getElementById('viewPhone').innerText = "PHONE " + document.getElementById('phoneInp').value;
             document.getElementById('viewEmail').innerText = document.getElementById('emailInp').value.toUpperCase();
+
+            // Font Families and Colors for Back
+            const backFont = document.getElementById('backFontInp').value;
+            const backColor = document.getElementById('backColorInp').value;
+            
+            const backTexts = document.querySelectorAll('.id-back-text');
+            backTexts.forEach(el => {
+                el.style.fontFamily = `"${backFont}", sans-serif`;
+                el.style.color = backColor;
+            });
+            
+            updateQRZoom();
         }
 
-        // Debounced QR Code Updater
+        // Handles purely the CSS scale for live preview
+        function updateQRZoom() {
+            const qrScale = parseFloat(document.getElementById('qrSizeInp').value) || 1.0;
+            const qrEl = document.getElementById('viewQR');
+            if (qrEl) {
+                qrEl.style.transform = `scale(${qrScale})`;
+            }
+        }
+
+        // Debounced QR Code API Updater (Data + Color)
         function updateQR() {
             clearTimeout(qrTimeout);
             qrTimeout = setTimeout(() => {
                 const data = document.getElementById('qrInp').value || "https://example.com/";
-                document.getElementById('viewQR').src = `https://quickchart.io/qr?size=400&text=${encodeURIComponent(data)}`;
+                // Get color and remove the hash '#' for the quickchart.io API
+                const colorCode = document.getElementById('qrColorInp').value.replace('#', '');
+                document.getElementById('viewQR').src = `https://quickchart.io/qr?size=400&text=${encodeURIComponent(data)}&dark=${colorCode}`;
             }, 500);
         }
 
@@ -712,7 +831,7 @@
                     const offsetXPercent = parseFloat(document.getElementById('offsetXInp').value) || 0;
                     const offsetYPercent = parseFloat(document.getElementById('offsetYInp').value) || 0;
 
-                    const clipHeight = height * 0.655; 
+                    const clipHeight = height * 0.650; // Updated to 65.0%
 
                     ctx.save();
                     ctx.beginPath();
@@ -737,14 +856,21 @@
                     ctx.restore(); 
                 }
 
-                // Retrieve Text Fonts & Offsets for Canvas
+                // Retrieve Settings for Role Canvas Draw
                 const roleFont = document.getElementById('roleFontInp').value;
+                const roleColor = document.getElementById('roleColorInp').value;
+                const roleScale = parseFloat(document.getElementById('roleSizeInp').value) || 1.0;
                 const roleOffsetX = parseFloat(document.getElementById('roleOffsetXInp').value) || 0;
                 const roleOffsetY = parseFloat(document.getElementById('roleOffsetYInp').value) || 0;
+                const canvasRoleSize = 90 * roleScale;
                 
+                // Retrieve Settings for Name Canvas Draw
                 const nameFont = document.getElementById('nameFontInp').value;
+                const nameColor = document.getElementById('nameColorInp').value;
+                const nameScale = parseFloat(document.getElementById('nameSizeInp').value) || 1.0;
                 const nameOffsetX = parseFloat(document.getElementById('nameOffsetXInp').value) || 0;
                 const nameOffsetY = parseFloat(document.getElementById('nameOffsetYInp').value) || 0;
+                const canvasNameSize = 55 * nameScale;
 
                 // 3. Draw Vertical Position (Top to Bottom)
                 const pos = document.getElementById('posInp').value.toUpperCase();
@@ -754,8 +880,8 @@
                     ctx.translate((width - 85) + roleOffsetX, (height * 0.25) + roleOffsetY); 
                     ctx.rotate(Math.PI / 2); 
                     
-                    ctx.fillStyle = '#00b300';
-                    ctx.font = `90px "${roleFont}", sans-serif`;
+                    ctx.fillStyle = roleColor;
+                    ctx.font = `900 ${canvasRoleSize}px "${roleFont}", sans-serif`;
                     ctx.textAlign = 'left';
                     ctx.textBaseline = 'middle';
                     ctx.letterSpacing = "2px"; 
@@ -767,8 +893,8 @@
                 // 4. Draw Horizontal Name Text
                 const name = document.getElementById('nameInp').value.toUpperCase();
                 if (name) {
-                    ctx.fillStyle = '#0a1172';
-                    ctx.font = `400 55px "${nameFont}", sans-serif`;
+                    ctx.fillStyle = nameColor;
+                    ctx.font = `400 ${canvasNameSize}px "${nameFont}", sans-serif`;
                     ctx.textAlign = 'center';
                     
                     const leftBoundary = width * 0.26;
@@ -794,34 +920,46 @@
                 if (qrImgEl && qrImgEl.src) {
                     const qrImg = await loadImage(qrImgEl.src).catch(() => null);
                     if (qrImg) {
-                        const qrSize = width * 0.40; // 40% of width
-                        const qrX = (width - qrSize) / 2;
-                        const qrY = height * 0.25;
+                        const qrScale = parseFloat(document.getElementById('qrSizeInp').value) || 1.0;
+                        const baseQrSize = width * 0.40; // 40% of width
+                        const qrSize = baseQrSize * qrScale;
+                        
+                        // Original centers for 40% width
+                        const originalCenterX = width / 2;
+                        const originalCenterY = (height * 0.25) + (baseQrSize / 2);
+                        
+                        const qrX = originalCenterX - (qrSize / 2);
+                        const qrY = originalCenterY - (qrSize / 2);
                         
                         // White backing for transparent QRs
                         ctx.fillStyle = "#ffffff";
-                        ctx.fillRect(qrX - 10, qrY - 10, qrSize + 20, qrSize + 20);
+                        // Scale padding alongside the QR Code
+                        const padding = 15 * qrScale;
+                        ctx.fillRect(qrX - padding, qrY - padding, qrSize + (padding * 2), qrSize + (padding * 2));
                         ctx.drawImage(qrImg, qrX, qrY, qrSize, qrSize);
                     }
                 }
 
                 // 3. Draw Back Text
-                ctx.fillStyle = '#000000';
+                const backFont = document.getElementById('backFontInp').value;
+                const backColor = document.getElementById('backColorInp').value;
+
+                ctx.fillStyle = backColor;
                 ctx.textAlign = 'center';
 
-                ctx.font = '700 50px Montserrat';
+                ctx.font = `700 50px "${backFont}", sans-serif`;
                 ctx.fillText(document.getElementById('viewIdNum').innerText, width / 2, height * 0.545);
 
-                ctx.font = '400 45px Montserrat';
+                ctx.font = `400 45px "${backFont}", sans-serif`;
                 ctx.fillText("BLOOD GROUPE", width / 2, height * 0.595);
 
-                ctx.font = '700 75px Montserrat';
+                ctx.font = `700 75px "${backFont}", sans-serif`;
                 ctx.fillText(document.getElementById('viewBlood').innerText, width / 2, height * 0.635);
 
-                ctx.font = '700 50px Montserrat';
+                ctx.font = `700 50px "${backFont}", sans-serif`;
                 ctx.fillText(document.getElementById('viewPhone').innerText, width / 2, height * 0.89);
 
-                ctx.font = '700 42px Montserrat';
+                ctx.font = `700 42px "${backFont}", sans-serif`;
                 ctx.fillText(document.getElementById('viewEmail').innerText, width / 2, height * 0.95);
             }
 
