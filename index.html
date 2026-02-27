@@ -324,7 +324,6 @@
             overflow: hidden;
         }
 
-        /* Positioning handled exclusively by JS to match Canvas exactly */
         .id-photo {
             position: absolute;
             transform-origin: top left;
@@ -337,7 +336,6 @@
             pointer-events: none;
         }
 
-        /* Converted to absolute positioning with rotate to perfectly mirror canvas math */
         .id-role {
             position: absolute;
             transform-origin: top left;
@@ -567,11 +565,22 @@
                     <div class="input-group">
                         <label>Typography</label>
                         <select id="backFontInp" onchange="syncBack()">
+                            <!-- Updated Back Side Fonts with all requested typography -->
                             <option value="Montserrat">Montserrat</option>
                             <option value="Stack Sans Notch">Stack Sans Notch</option>
                             <option value="Archivo Black">Archivo Black</option>
                             <option value="Unbounded">Unbounded</option>
+                            <option value="Monoton">Monoton</option>
                             <option value="Audiowide">Audiowide</option>
+                            <option value="Paytone One">Paytone One</option>
+                            <option value="Rowdies">Rowdies</option>
+                            <option value="Lilita One">Lilita One</option>
+                            <option value="Arial Black">Black 900</option>
+                            <option value="Libre Barcode 39 Text">Libre Barcode 39</option>
+                            <option value="Wallpoet">Wallpoet</option>
+                            <option value="Bungee Inline">Bungee Inline</option>
+                            <option value="Alumni Sans Inline One">Alumni Sans</option>
+                            <option value="Zen Tokyo Zoo">Zen Tokyo Zoo</option>
                         </select>
                     </div>
                     <div class="input-group">
@@ -626,7 +635,7 @@
                     <img id="viewQR" src="https://quickchart.io/qr?size=400&text=https%3A%2F%2Fdaffodilvarsity.edu.bd%2F&dark=000000" class="id-qr" crossorigin="anonymous" alt="QR Code">
                 </div>
                 <div class="id-back-text" id="viewIdNum">ID 1234567890</div>
-                <div class="id-back-text" id="viewBloodLbl">BLOOD GROUPE</div>
+                <div class="id-back-text" id="viewBloodLbl">BLOOD GROUP</div>
                 <div class="id-back-text" id="viewBlood">A+</div>
                 <div class="id-back-text" id="viewPhone">PHONE +8801234567890</div>
                 <div class="id-back-text" id="viewEmail">STUDENT@EXAMPLE.COM</div>
@@ -646,6 +655,15 @@
         // Base Canvas Dimensions 
         const CANVAS_W = 1200;
         const CANVAS_H = 1920;
+        
+        // Animation Frame References for buttery-smooth sliders
+        let frontRAF = null;
+        let backRAF = null;
+        let qrZoomRAF = null;
+        
+        // Cached layout math to prevent DOM reflow thrashing during sliding
+        let scaleRatioFront = 0;
+        let scaleRatioBack = 0;
 
         // Image URLs
         const bgImgUrlFront = 'https://raw.githubusercontent.com/SadatPro/img/refs/heads/main/NEW_ESRC_ID_CARD2.jpg';
@@ -661,6 +679,17 @@
             });
         };
 
+        function updateScaleRatios() {
+            const wrapperFront = document.getElementById('capture-area-front');
+            if (wrapperFront && wrapperFront.offsetWidth > 0) {
+                scaleRatioFront = wrapperFront.offsetWidth / CANVAS_W;
+            }
+            const wrapperBack = document.getElementById('capture-area-back');
+            if (wrapperBack && wrapperBack.offsetWidth > 0) {
+                scaleRatioBack = wrapperBack.offsetWidth / CANVAS_W;
+            }
+        }
+
         function switchTab(side) {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById('btn-' + side).classList.add('active');
@@ -669,9 +698,12 @@
             document.getElementById('controls-' + side).classList.add('active');
             document.getElementById('preview-' + side).classList.add('active');
             
-            // Re-sync sizes on tab switch in case preview width changed
-            if (side === 'front') syncFront();
-            if (side === 'back') syncBack();
+            // Allow CSS to render the block before calculating offsetWidth
+            setTimeout(() => {
+                updateScaleRatios();
+                if (side === 'front') _syncFront();
+                if (side === 'back') _syncBack();
+            }, 20);
         }
 
         function handleImg(e) {
@@ -692,12 +724,26 @@
         }
 
         // --- MATH SYNCHRONIZATION CORE ---
+        // Using requestAnimationFrame wrappers to make sliders 60fps smooth
         function syncFront() {
-            const wrapper = document.getElementById('capture-area-front');
-            if (!wrapper) return;
-            
-            const previewWidth = wrapper.offsetWidth;
-            const scaleRatio = previewWidth / CANVAS_W; // Multiplier to map Canvas pixels to DOM pixels
+            if (frontRAF) cancelAnimationFrame(frontRAF);
+            frontRAF = requestAnimationFrame(_syncFront);
+        }
+        
+        function syncBack() {
+            if (backRAF) cancelAnimationFrame(backRAF);
+            backRAF = requestAnimationFrame(_syncBack);
+        }
+
+        function updateQRZoom() {
+            if (qrZoomRAF) cancelAnimationFrame(qrZoomRAF);
+            qrZoomRAF = requestAnimationFrame(_updateQRZoom);
+        }
+
+        function _syncFront() {
+            if (!scaleRatioFront) updateScaleRatios();
+            const scaleRatio = scaleRatioFront;
+            if (!scaleRatio) return;
 
             // Variables
             const nameText = document.getElementById('nameInp').value || "";
@@ -720,7 +766,6 @@
             nameEl.style.fontFamily = `"${nameFont}", sans-serif`;
             posEl.style.fontFamily = `"${roleFont}", sans-serif`;
             
-            // Explicitly set normal weight so decorative fonts match canvas
             nameEl.style.fontWeight = 'normal';
             posEl.style.fontWeight = 'normal';
 
@@ -729,7 +774,7 @@
             const roleScale = parseFloat(document.getElementById('roleSizeInp').value) || 1.0;
             
             const canvasNameSize = 60 * nameScale;
-            const canvasRoleSize = 105 * roleScale; // Base size map
+            const canvasRoleSize = 105 * roleScale; 
             
             nameEl.style.fontSize = `${canvasNameSize * scaleRatio}px`;
             posEl.style.fontSize = `${canvasRoleSize * scaleRatio}px`;
@@ -780,12 +825,10 @@
             }
         }
 
-        function syncBack() {
-            const wrapper = document.getElementById('capture-area-back');
-            if (!wrapper) return;
-            
-            const previewWidth = wrapper.offsetWidth;
-            const scaleRatio = previewWidth / CANVAS_W;
+        function _syncBack() {
+            if (!scaleRatioBack) updateScaleRatios();
+            const scaleRatio = scaleRatioBack;
+            if (!scaleRatio) return;
 
             document.getElementById('viewIdNum').innerText = "ID " + document.getElementById('idNumInp').value;
             document.getElementById('viewBlood').innerText = document.getElementById('bloodInp').value.toUpperCase();
@@ -795,12 +838,13 @@
             const backFont = document.getElementById('backFontInp').value;
             const backColor = document.getElementById('backColorInp').value;
             
+            // Adjusted Alignments specifically for the Blood Grouping typography fixes
             const textsToMap = [
-                { id: 'viewIdNum',   yPct: 0.545, size: 50, weight: "bold" },
-                { id: 'viewBloodLbl',yPct: 0.595, size: 45, weight: "normal" },
-                { id: 'viewBlood',   yPct: 0.635, size: 75, weight: "bold" },
+                { id: 'viewIdNum',   yPct: 0.540, size: 50, weight: "bold" },
+                { id: 'viewBloodLbl',yPct: 0.585, size: 40, weight: "normal" }, // Adjusted spacing
+                { id: 'viewBlood',   yPct: 0.615, size: 75, weight: "bold" },   // Adjusted grouping layout
                 { id: 'viewPhone',   yPct: 0.890, size: 50, weight: "bold" },
-                { id: 'viewEmail',   yPct: 0.950, size: 42, weight: "bold" }
+                { id: 'viewEmail',   yPct: 0.940, size: 42, weight: "bold" }
             ];
 
             textsToMap.forEach(t => {
@@ -817,13 +861,13 @@
                 }
             });
             
-            updateQRZoom();
+            _updateQRZoom();
         }
 
-        function updateQRZoom() {
-            const wrapper = document.getElementById('capture-area-back');
-            if (!wrapper) return;
-            const scaleRatio = wrapper.offsetWidth / CANVAS_W;
+        function _updateQRZoom() {
+            if (!scaleRatioBack) updateScaleRatios();
+            const scaleRatio = scaleRatioBack;
+            if (!scaleRatio) return;
 
             const qrScale = parseFloat(document.getElementById('qrSizeInp').value) || 1.0;
             const baseQrSize = CANVAS_W * 0.40; 
@@ -856,21 +900,20 @@
             }, 500);
         }
 
-        // Keep mappings responsive
+        // Keep mappings responsive and fast
         window.addEventListener('resize', () => {
+            updateScaleRatios();
             syncFront();
             syncBack();
         });
 
         // High-Res Render & Download
         async function downloadIDCard(side) {
-            // FORCE PRE-LOAD FONTS FOR CANVAS API
             try {
                 const rFont = document.getElementById('roleFontInp').value;
                 const nFont = document.getElementById('nameFontInp').value;
                 const bFont = document.getElementById('backFontInp').value;
                 
-                // Explicity fetch these into document.fonts array to prevent Canvas fallback failure
                 if (side === 'front') {
                     await document.fonts.load(`normal 10px "${rFont}"`);
                     await document.fonts.load(`normal 10px "${nFont}"`);
@@ -943,7 +986,6 @@
                     ctx.rotate(Math.PI / 2); 
                     
                     ctx.fillStyle = roleColor;
-                    // Removed '900' weight constraint; using 'normal' ensures custom fonts do not fail in Canvas
                     ctx.font = `normal ${canvasRoleSize}px "${roleFont}", sans-serif`;
                     ctx.textAlign = 'left';
                     ctx.textBaseline = 'top'; 
@@ -965,7 +1007,6 @@
 
                     ctx.save();
                     ctx.fillStyle = nameColor;
-                    // Removed '400' weight constraint; using 'normal'
                     ctx.font = `normal ${canvasNameSize}px "${nameFont}", sans-serif`;
                     ctx.textAlign = 'center';
                     ctx.textBaseline = 'top'; 
@@ -1018,21 +1059,21 @@
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'top'; 
 
-                // Updated to use bold and normal string references for safer cross-browser Canvas parsing
+                // Updated to use the synchronized alignment offsets
                 ctx.font = `bold 50px "${backFont}", sans-serif`;
-                ctx.fillText(document.getElementById('viewIdNum').innerText, CANVAS_W / 2, CANVAS_H * 0.545);
+                ctx.fillText(document.getElementById('viewIdNum').innerText, CANVAS_W / 2, CANVAS_H * 0.540);
 
-                ctx.font = `normal 45px "${backFont}", sans-serif`;
-                ctx.fillText("BLOOD GROUPE", CANVAS_W / 2, CANVAS_H * 0.595);
+                ctx.font = `normal 40px "${backFont}", sans-serif`;
+                ctx.fillText("BLOOD GROUP", CANVAS_W / 2, CANVAS_H * 0.585);
 
                 ctx.font = `bold 75px "${backFont}", sans-serif`;
-                ctx.fillText(document.getElementById('viewBlood').innerText, CANVAS_W / 2, CANVAS_H * 0.635);
+                ctx.fillText(document.getElementById('viewBlood').innerText, CANVAS_W / 2, CANVAS_H * 0.615);
 
                 ctx.font = `bold 50px "${backFont}", sans-serif`;
-                ctx.fillText(document.getElementById('viewPhone').innerText, CANVAS_W / 2, CANVAS_H * 0.89);
+                ctx.fillText(document.getElementById('viewPhone').innerText, CANVAS_W / 2, CANVAS_H * 0.890);
 
                 ctx.font = `bold 42px "${backFont}", sans-serif`;
-                ctx.fillText(document.getElementById('viewEmail').innerText, CANVAS_W / 2, CANVAS_H * 0.95);
+                ctx.fillText(document.getElementById('viewEmail').innerText, CANVAS_W / 2, CANVAS_H * 0.940);
             }
 
             const link = document.createElement('a');
@@ -1043,8 +1084,9 @@
         }
 
         window.onload = () => {
-            syncFront();
-            syncBack();
+            updateScaleRatios();
+            _syncFront();
+            _syncBack();
         };
     </script>
 </body>
