@@ -6,6 +6,8 @@
     <title>TryMyID - Material Design ID Editor</title>
     <!-- Massive Google Fonts Import including Roboto for UI -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Alumni+Sans+Inline+One&family=Archivo+Black&family=Audiowide&family=Bungee+Inline&family=Jersey+20+Charted&family=Jersey+25+Charted&family=Libre+Barcode+39+Text&family=Lilita+One&family=Monoton&family=Paytone+One&family=Rowdies&family=Rubik+Broken+Fax&family=Rubik+Glitch+Pop&family=Rubik+Lines&family=Unbounded:wght@400;700;900&family=Wallpoet&family=Zen+Tokyo+Zoo&family=Orbitron:wght@700;900&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <!-- PDF Generation Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         :root {
             /* Material Design 3 Dark Theme Palette (Green Primary) */
@@ -110,8 +112,9 @@
             border-bottom: 3px solid var(--md-primary);
         }
 
-        .container {
-            display: flex;
+        /* Layout visibility */
+        .tab-panel {
+            display: none;
             gap: 48px;
             width: 100%;
             max-width: 1100px;
@@ -119,11 +122,17 @@
             justify-content: center;
             align-items: flex-start;
             padding: 0 20px;
+            margin: 0 auto;
+        }
+
+        .tab-panel.active {
+            display: flex;
         }
 
         /* Settings Panel Structure - Material Cards */
         .controls {
-            width: 420px;
+            width: 100%;
+            max-width: 420px;
             display: flex;
             flex-direction: column;
             gap: 24px;
@@ -311,20 +320,34 @@
             box-shadow: 0 2px 4px rgba(74, 222, 128, 0.25);
         }
 
+        .btn-secondary {
+            background: rgba(74, 222, 128, 0.1);
+            color: var(--md-primary);
+            border: 1px solid rgba(74, 222, 128, 0.3);
+            margin-top: 12px;
+        }
+        .btn-secondary:hover {
+            background: rgba(74, 222, 128, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            width: 100%;
+        }
+
         .tip {
             font-size: 12px;
             color: var(--md-text-secondary);
             margin-top: 4px;
         }
 
-        /* Layout visibility */
-        .tab-content { display: none; }
-        .controls.tab-content.active { display: flex; flex-direction: column; }
-        .preview-container.tab-content.active { display: flex; flex-direction: column; }
-
         .preview-container {
             flex: 1;
             min-width: 380px;
+            display: flex;
+            flex-direction: column;
             align-items: center;
             position: sticky;
             top: 120px;
@@ -414,8 +437,8 @@
         }
 
         @media (max-width: 860px) {
-            .preview-container { position: static; }
-            .controls { width: 100%; }
+            .preview-container { position: static; min-width: 100%; }
+            .controls { max-width: 100%; }
         }
     </style>
 </head>
@@ -431,9 +454,9 @@
         <button id="btn-back" class="tab-btn" onclick="switchTab('back')">Back Side</button>
     </div>
 
-    <div class="container">
+    <div class="tab-panel active" id="panel-front">
         <!-- Settings Panel: FRONT -->
-        <div class="controls tab-content active" id="controls-front">
+        <div class="controls">
 
             <div class="control-section">
                 <div class="section-header">Role Configuration</div>
@@ -558,14 +581,37 @@
                 </div>
             </div>
 
-            <button class="btn btn-primary" onclick="downloadIDCard('front')">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                Export Front Card
-            </button>
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="downloadIDCard('front', 'png')">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    PNG
+                </button>
+                <button class="btn btn-secondary" onclick="downloadIDCard('front', 'pdf')">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                    PDF
+                </button>
+            </div>
         </div>
 
+        <!-- Live Preview: FRONT -->
+        <div class="preview-container">
+            <div class="id-card-wrapper" id="capture-area-front">
+                <div class="id-bg"></div>
+                <div class="id-photo-area">
+                    <img id="viewPhoto" src="" class="id-photo" style="display: none;">
+                </div>
+                <div class="id-overlay">
+                    <div class="id-role" id="viewPos">PRESIDENT</div>
+                    <div class="id-name" id="viewName">SADAT MAHMUD</div>
+                </div>
+            </div>
+            <p class="preview-label">Live Preview Engine Synchronized</p>
+        </div>
+    </div>
+
+    <div class="tab-panel" id="panel-back">
         <!-- Settings Panel: BACK -->
-        <div class="controls tab-content" id="controls-back">
+        <div class="controls">
             <div class="control-section">
                 <div class="section-header">Card Information</div>
                 <div class="input-group">
@@ -634,29 +680,20 @@
                 </div>
             </div>
 
-            <button class="btn btn-primary" onclick="downloadIDCard('back')">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                Export Back Card
-            </button>
-        </div>
-
-        <!-- Live Preview: FRONT -->
-        <div class="preview-container tab-content active" id="preview-front">
-            <div class="id-card-wrapper" id="capture-area-front">
-                <div class="id-bg"></div>
-                <div class="id-photo-area">
-                    <img id="viewPhoto" src="" class="id-photo" style="display: none;">
-                </div>
-                <div class="id-overlay">
-                    <div class="id-role" id="viewPos">PRESIDENT</div>
-                    <div class="id-name" id="viewName">SADAT MAHMUD</div>
-                </div>
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="downloadIDCard('back', 'png')">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    PNG
+                </button>
+                <button class="btn btn-secondary" onclick="downloadIDCard('back', 'pdf')">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                    PDF
+                </button>
             </div>
-            <p class="preview-label">Live Preview Engine Synchronized</p>
         </div>
 
         <!-- Live Preview: BACK -->
-        <div class="preview-container tab-content" id="preview-back">
+        <div class="preview-container">
             <div class="id-card-wrapper" id="capture-area-back">
                 <div class="id-bg-back"></div>
                 <div class="id-qr-area">
@@ -670,7 +707,6 @@
             </div>
             <p class="preview-label">Live Preview Engine Synchronized</p>
         </div>
-
     </div>
 
     <!-- Hidden canvas for rendering high quality image -->
@@ -718,9 +754,8 @@
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById('btn-' + side).classList.add('active');
             
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            document.getElementById('controls-' + side).classList.add('active');
-            document.getElementById('preview-' + side).classList.add('active');
+            document.querySelectorAll('.tab-panel').forEach(content => content.classList.remove('active'));
+            document.getElementById('panel-' + side).classList.add('active');
             
             setTimeout(() => {
                 updateScaleRatios();
@@ -907,7 +942,7 @@
         function updateQR() {
             clearTimeout(qrTimeout);
             qrTimeout = setTimeout(() => {
-                const data = document.getElementById('qrInp').value || "https://example.com/";
+                const data = document.getElementById('qrInp').value || "https://daffodilvarsity.edu.bd/";
                 const colorCode = document.getElementById('qrColorInp').value.replace('#', '');
                 document.getElementById('viewQR').src = `https://quickchart.io/qr?size=400&text=${encodeURIComponent(data)}&dark=${colorCode}`;
             }, 500);
@@ -919,7 +954,7 @@
             syncBack();
         });
 
-        async function downloadIDCard(side) {
+        async function downloadIDCard(side, format = 'png') {
             try {
                 const rFont = document.getElementById('roleFontInp').value;
                 const nFont = document.getElementById('nameFontInp').value;
@@ -1082,11 +1117,26 @@
                 ctx.fillText(document.getElementById('viewEmail').innerText, CANVAS_W / 2, CANVAS_H * 0.940);
             }
 
-            const link = document.createElement('a');
             const safeName = document.getElementById('nameInp').value.replace(/[^a-z0-9]/gi, '_').toLowerCase() || 'id_card';
-            link.download = `TryMyID_${safeName}_${side.toUpperCase()}.png`;
-            link.href = canvas.toDataURL('image/png', 1.0);
-            link.click();
+            
+            if (format === 'pdf') {
+                const { jsPDF } = window.jspdf;
+                // Instantiate jsPDF with exact canvas dimensions to prevent blurry scaling
+                const pdf = new jsPDF({
+                    orientation: 'portrait',
+                    unit: 'px',
+                    format: [CANVAS_W, CANVAS_H]
+                });
+                
+                // Add the canvas as a JPEG to keep PDF file sizes optimized
+                pdf.addImage(canvas.toDataURL('image/jpeg', 1.0), 'JPEG', 0, 0, CANVAS_W, CANVAS_H);
+                pdf.save(`TryMyID_${safeName}_${side.toUpperCase()}.pdf`);
+            } else {
+                const link = document.createElement('a');
+                link.download = `TryMyID_${safeName}_${side.toUpperCase()}.png`;
+                link.href = canvas.toDataURL('image/png', 1.0);
+                link.click();
+            }
         }
 
         window.onload = () => {
